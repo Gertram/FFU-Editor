@@ -3,18 +3,34 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32104.313
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLFontViewer", "DLFontViewer\DLFontViewer.csproj", "{0FBCCBDA-EA73-4F6F-BE92-7F14231885DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DLFontViewer", "DLFontViewer\DLFontViewer.csproj", "{0FBCCBDA-EA73-4F6F-BE92-7F14231885DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hjg.Pngcs", "D:\Downloads\pngcs_1_1_4_src\src\Hjg.Pngcs\Hjg.Pngcs.csproj", "{FD3B0D50-46B3-4A83-9A6D-C641569142CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug45|Any CPU = Debug45|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Release45|Any CPU = Release45|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0FBCCBDA-EA73-4F6F-BE92-7F14231885DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0FBCCBDA-EA73-4F6F-BE92-7F14231885DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FBCCBDA-EA73-4F6F-BE92-7F14231885DA}.Debug45|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FBCCBDA-EA73-4F6F-BE92-7F14231885DA}.Debug45|Any CPU.Build.0 = Debug|Any CPU
 		{0FBCCBDA-EA73-4F6F-BE92-7F14231885DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FBCCBDA-EA73-4F6F-BE92-7F14231885DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FBCCBDA-EA73-4F6F-BE92-7F14231885DA}.Release45|Any CPU.ActiveCfg = Release|Any CPU
+		{0FBCCBDA-EA73-4F6F-BE92-7F14231885DA}.Release45|Any CPU.Build.0 = Release|Any CPU
+		{FD3B0D50-46B3-4A83-9A6D-C641569142CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD3B0D50-46B3-4A83-9A6D-C641569142CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD3B0D50-46B3-4A83-9A6D-C641569142CF}.Debug45|Any CPU.ActiveCfg = Debug45|Any CPU
+		{FD3B0D50-46B3-4A83-9A6D-C641569142CF}.Debug45|Any CPU.Build.0 = Debug45|Any CPU
+		{FD3B0D50-46B3-4A83-9A6D-C641569142CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD3B0D50-46B3-4A83-9A6D-C641569142CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD3B0D50-46B3-4A83-9A6D-C641569142CF}.Release45|Any CPU.ActiveCfg = Release45|Any CPU
+		{FD3B0D50-46B3-4A83-9A6D-C641569142CF}.Release45|Any CPU.Build.0 = Release45|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
