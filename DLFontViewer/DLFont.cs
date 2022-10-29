@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DLFontViewer
 {
-    internal class DLFont
+    public class DLFont
     {
-        internal struct Header
+        public struct Header
         {
             public short SectionNumbers;
             public int SymCount;
@@ -28,7 +28,7 @@ namespace DLFontViewer
         public static int counter = 0;
         private static int last_seek;
 
-        internal static DLFont LoadFont<T>(byte[] data) where T : ISym, new()
+        public static DLFont LoadFont<T>(byte[] data) where T : ISym, new()
         {
             var font = new DLFont
             {

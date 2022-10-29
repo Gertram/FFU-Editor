@@ -101,7 +101,6 @@
             this.richTextBox1.TabIndex = 2;
             this.richTextBox1.Text = "";
             this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
-            this.richTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddSymForm_KeyDown);
             // 
             // txtWidth
             // 
@@ -464,9 +463,6 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "AddSymForm";
             this.Text = "AddSymForm";
-            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.AddSymForm_DragDrop);
-            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.AddSymForm_DragEnter);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddSymForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
