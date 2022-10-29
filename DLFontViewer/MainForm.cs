@@ -205,6 +205,7 @@ namespace DLFontViewer
             var bitmap = new Bitmap(850, 810);
             if (!syms.Any())
             {
+                pbSymbols.Image = bitmap;
                 return;
             }
             ShowSym(0x8440);
@@ -244,7 +245,7 @@ namespace DLFontViewer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            LoadFromFile<CompressedSym>("D:\\Diabolik lovers\\Work\\DL\\font\\0");
+            //LoadFromFile<CompressedSym>("D:\\Diabolik lovers\\Work\\DL\\font\\0");
             // LoadFromFile<CompressedSym>("D:\\PSP\\Princess\\system\\900");
             //button1_Click(null, null);
         }
@@ -843,6 +844,24 @@ namespace DLFontViewer
              }
              ShowRusSymsImage();
          }*/
+        private void SetBorder(ISym sym,int border)
+        {
+            var leftBorder = FindLeftBorder(sym);
+
+            int rightBorder = FindRightBorder(sym);
+
+            var symWidth = rightBorder - leftBorder + 1 +border*2;
+            var temp = new byte[symWidth, sym.Height];
+            for (int y = 0; y < sym.Height; y++)
+            {
+                for (int x = leftBorder; x <= rightBorder; x++)
+                {
+                    temp[x-leftBorder+border, y] = sym.Image[x, y];
+                }
+            }
+            sym.Image = temp;
+            sym.Width = (byte)symWidth;
+        }
         private void CutSym(ISym sym, int border)
         {
             var leftBorder = FindLeftBorder(sym);
@@ -878,14 +897,22 @@ namespace DLFontViewer
                 return;
             }*/
 
-            foreach (var sym in font.symbols.Where(x => x.Key >= 0x8440 && x.Key <= 0x8460))
+            /*foreach (var sym in font.symbols.Where(x => x.Key >= 0x8440 && x.Key <= 0x8460))
             {
                 CutSym(sym.Value, 4);
             }
             foreach (var sym in font.symbols.Where(x => x.Key >= 0x8470 && x.Key <= 0x8491))
             {
                 CutSym(sym.Value, 7);
+            }*/
+            foreach (var sym in font.symbols.Where(x => x.Key >= 'A' && x.Key <= 'Z'))
+            {
+                SetBorder(sym.Value, 2);
             }
+            /*foreach (var sym in font.symbols.Where(x => x.Key >= 'a' && x.Key <= 'z'))
+            {
+                SetBorder(sym.Value, 1);
+            }*/
             ShowRusSymsImage();
         }
         private byte[,] NewPallitte(byte[,] image)
@@ -908,9 +935,14 @@ namespace DLFontViewer
         }
         private void anotherUncompressToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var data = File.ReadAllBytes("D:\\Diabolik lovers\\Work\\DL\\font\\advfont29x37.ffu");
+
+            var data = File.ReadAllBytes("D:\\Diabolik lovers\\Work\\DL\\font\\advfont24x30.ffu");
             var tempFont = LoadFont<UncompressedSym>(data);
-            foreach (var sym in tempFont.symbols.Where(x => x.Key >= 0x8440 && x.Key <= 0x8460))
+            foreach(var sym in tempFont.symbols.Where(x => x.Key >= 'A' && x.Key <= 'Z' || x.Key >= 'a' && x.Key <= 'z'))
+            {
+                font.symbols[sym.Key] = sym.Value;
+            }
+           /* foreach (var sym in tempFont.symbols.Where(x => x.Key >= 0x8440 && x.Key <= 0x8460))
             {
                 CutSym(sym.Value, 12);
             }
@@ -921,10 +953,10 @@ namespace DLFontViewer
             foreach (var item in tempFont.symbols)
             {
                 if (font.symbols.TryGetValue(item.Key, out var sym))
-                {/*
+                {*//*
                     sym.Image = NewPallitte(item.Value.Image);
                     sym.Height = item.Value.Height;
-                    sym.Width = item.Value.Width;*/
+                    sym.Width = item.Value.Width;*//*
                     if (item.Key >= 0x8440 && item.Key <= 0x8491 || item.Key >= 0x41 && item.Key <= 0x5a || item.Key >= 0x61 && item.Key <= 0x7a)
                     {
                         var left = (int)Math.Ceiling(FindLeftBorder(item.Value) * 24.0f / 29.0f);
@@ -938,7 +970,7 @@ namespace DLFontViewer
 
                 }
 
-            }/*
+            }*//*
             foreach (var sym in font.symbols.Where(x => x.Key >= 0x8440 && x.Key <= 0x8491))
             {
                 
@@ -958,6 +990,110 @@ namespace DLFontViewer
                 font.symbols[item].Height = 0x1e;
             }
             ShowRusSymsImage();
+        }
+        private bool FindColor(IDictionary<Color,byte> colors,Color color,out int value)
+        {
+            foreach (var item in colors)
+            {
+                if (item.Key.ToArgb() == color.ToArgb())
+                {
+                    value= item.Value;
+                    return true;
+                }
+            }
+            value = 0;
+            return false;
+        }
+        private ISym ConvertToSym<T>(char sym,Bitmap bitmap, Dictionary<Color,byte> colors) where T : ISym, new()
+        {
+            var data = new byte[bitmap.Width, bitmap.Height];
+            
+            for(int y = 0;y < bitmap.Height; y++)
+            {
+                for(int x = 0;x < bitmap.Width; x++)
+                {
+                    var pixel = bitmap.GetPixel(x, y);
+                  
+                    if(FindColor(colors,pixel, out var value))
+                    {
+                        data[x,y] = (byte)value;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            var temp = new T
+            {
+                Image = data,
+                Width = (byte)bitmap.Width,
+                Height = (byte)bitmap.Height
+            };
+            return temp;
+        }
+        private static Encoding encoding = Encoding.GetEncoding("shift-jis");
+        private int ToInt(char sym)
+        {
+            var bytes = encoding.GetBytes(new char[] { sym });
+            if (bytes.Length == 2) {
+                return BitConverter.ToUInt16(bytes.Reverse().ToArray(), 0);
+            }
+            return bytes[0];
+        }
+        private void GenerateFontToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            var win = new GenerateFontWindow();
+            if(win.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            
+            foreach(var item in win.Syms)
+            {
+                var sym = ConvertToSym<CompressedSym>(item.Key, item.Value,win.Colors);
+                
+
+                var key = ToInt(item.Key);
+                font.symbols[key] = sym;
+            }
+            ShowRusSymsImage();
+           /* 
+            var bitmap = new Bitmap(600, 600);
+            var graphics = Graphics.FromImage(bitmap);
+            
+            var font = new Font("Cambria", 16);
+            var brush = new SolidBrush(Color.Black);
+            var drawFormat = new StringFormat();
+            drawFormat.FormatFlags = StringFormatFlags.DirectionVertical;
+            var rectf = new RectangleF(0, 0, 300, 200);
+            graphics.FillRectangle(Brushes.Transparent, rectf);
+            graphics.DrawString("АБСДЕ", font, brush, rectf);
+            graphics.Flush();
+            pbSymbols.BackColor = Color.Transparent;
+            pbSymbols.Image = bitmap;*/
+        }
+
+        private void MainForm_DragDrop(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop, false))
+            {
+                return;
+            }
+            var filename = (e.Data.GetData(DataFormats.FileDrop, false) as string[])[0];
+
+            LoadFromFile<CompressedSym>(filename);
+        }
+
+        private void MainForm_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
+        }
+
+        private void pNGToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

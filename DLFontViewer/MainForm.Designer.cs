@@ -38,6 +38,7 @@
             this.anotherUncompressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.anotherCompressedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.обрезатьСимволToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.GenerateFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnEnterSymCode = new System.Windows.Forms.Button();
@@ -53,6 +54,8 @@
             this.pbSymbols = new System.Windows.Forms.PictureBox();
             this.SymAddressLabel = new System.Windows.Forms.Label();
             this.SymHeaderAddress = new System.Windows.Forms.Label();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pNGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -66,7 +69,8 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.обрезатьСимволToolStripMenuItem});
+            this.обрезатьСимволToolStripMenuItem,
+            this.GenerateFontToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 28);
@@ -78,7 +82,8 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
-            this.importToolStripMenuItem});
+            this.importToolStripMenuItem,
+            this.exportToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileToolStripMenuItem.Text = "File";
@@ -143,6 +148,13 @@
             this.обрезатьСимволToolStripMenuItem.Text = "Обрезать символ";
             this.обрезатьСимволToolStripMenuItem.Click += new System.EventHandler(this.CutSymsToolStripMenuItem_Click);
             // 
+            // GenerateFontToolStripMenuItem
+            // 
+            this.GenerateFontToolStripMenuItem.Name = "GenerateFontToolStripMenuItem";
+            this.GenerateFontToolStripMenuItem.Size = new System.Drawing.Size(179, 24);
+            this.GenerateFontToolStripMenuItem.Text = "Сгенерировать шрифт";
+            this.GenerateFontToolStripMenuItem.Click += new System.EventHandler(this.GenerateFontToolStripMenuItem_Click);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Black;
@@ -158,7 +170,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(114, 16);
+            this.label1.Size = new System.Drawing.Size(118, 17);
             this.label1.TabIndex = 2;
             this.label1.Text = "Код символа hex";
             // 
@@ -294,7 +306,7 @@
             this.SymAddressLabel.AutoSize = true;
             this.SymAddressLabel.Location = new System.Drawing.Point(195, 206);
             this.SymAddressLabel.Name = "SymAddressLabel";
-            this.SymAddressLabel.Size = new System.Drawing.Size(44, 16);
+            this.SymAddressLabel.Size = new System.Drawing.Size(46, 17);
             this.SymAddressLabel.TabIndex = 9;
             this.SymAddressLabel.Text = "label2";
             // 
@@ -303,12 +315,28 @@
             this.SymHeaderAddress.AutoSize = true;
             this.SymHeaderAddress.Location = new System.Drawing.Point(195, 190);
             this.SymHeaderAddress.Name = "SymHeaderAddress";
-            this.SymHeaderAddress.Size = new System.Drawing.Size(44, 16);
+            this.SymHeaderAddress.Size = new System.Drawing.Size(46, 17);
             this.SymHeaderAddress.TabIndex = 10;
             this.SymHeaderAddress.Text = "label2";
             // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pNGToolStripMenuItem});
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.exportToolStripMenuItem.Text = "Export";
+            // 
+            // pNGToolStripMenuItem
+            // 
+            this.pNGToolStripMenuItem.Name = "pNGToolStripMenuItem";
+            this.pNGToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.pNGToolStripMenuItem.Text = "PNG";
+            this.pNGToolStripMenuItem.Click += new System.EventHandler(this.pNGToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 360);
@@ -325,6 +353,8 @@
             this.Text = "DLFontViewer";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Click += new System.EventHandler(this.MainForm_Click);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainForm_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainForm_DragEnter);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -367,5 +397,8 @@
         private System.Windows.Forms.ToolStripMenuItem anotherUncompressToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem anotherCompressedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem обрезатьСимволToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem GenerateFontToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pNGToolStripMenuItem;
     }
 }
