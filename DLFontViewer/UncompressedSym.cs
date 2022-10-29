@@ -9,10 +9,21 @@ using System.Threading.Tasks;
 
 namespace DLFontViewer
 {
-    public class UncompressedSym: ISym
+    public class UncompressedSym : ISym
     {
+        static UncompressedSym()
+        {
+            var list = new Color[16];
+            for (var i = 0; i < 16; i++)
+            {
+                list[i] = (Color.FromArgb(0x10 * i, 0xff, 0xff, 0xff));
+            }
+            list[0] = (Color.FromArgb(0));
+            list[15] = (Color.White);
+            colors = list;
+        }
         public byte Width { get; set; }
-        public byte Height { get;  set; }
+        public byte Height { get; set; }
         public byte[,] Image { get; set; }
         public int HeaderAddress { get; set; }
         public int Address { get; set; }
@@ -21,24 +32,24 @@ namespace DLFontViewer
         {
             byte[,] matrix;
             width = (byte)(length / height * 2);
-/*
-            if (length == width * height / 2)
-            {*/
-                matrix = new byte[width, height];
-                var temp = new List<byte>();
-                for (int i = 0; i < length; i++)
+            /*
+                        if (length == width * height / 2)
+                        {*/
+            matrix = new byte[width, height];
+            var temp = new List<byte>();
+            for (int i = 0; i < length; i++)
+            {
+                var val = data[i + seek];
+                temp.Add((byte)(val >> 4));
+                temp.Add((byte)(val & 0x0f));
+            }
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
                 {
-                    var val = data[i + seek];
-                    temp.Add((byte)(val >> 4));
-                    temp.Add((byte)(val & 0x0f));
+                    matrix[x, y] = temp[y * width + x];
                 }
-                for (int y = 0; y < height; y++)
-                {
-                    for (int x = 0; x < width; x++)
-                    {
-                        matrix[x, y] = temp[y * width + x];
-                    }
-                }
+            }
 
             /* }
              else
@@ -67,7 +78,9 @@ namespace DLFontViewer
             this.Width = width;
             this.Height = height;
             this.Image = matrix;
+
         }
+        private static Color[] colors;
 
         internal byte[] ToArray()
         {
@@ -83,32 +96,22 @@ namespace DLFontViewer
 
             return data;
         }
-        public IReadOnlyList<Color> Colors { get
+        public IReadOnlyList<Color> Colors
+        {
+            get
             {
-                return new List<Color>
+                var list = new List<Color>();
+                for (var i = 0; i < 0xf0; i += 0x10)
                 {
-                    Color.FromArgb(0,0,0,0),
-                    Color.FromArgb(0x40,0,0,0),
-                    Color.FromArgb(0x80,0,0,0),
-                    Color.FromArgb(0xa0,0,0),
-                    Color.FromArgb(0xD8,0,0,0),
-                    Color.FromArgb(0XFF,0,0,0),
-                    Color.FromArgb(0xff,0x28,0x28,0x28),
-                    Color.FromArgb(0xff,0x50,0x50,0x50),
-                    Color.FromArgb(0xff,0x70,0x70,0x70),
-                    Color.FromArgb(0xff,0x88,0x88,0x88),
-                    Color.FromArgb(0xff,0x98,0x98,0x98),
-                    Color.FromArgb(0xff,0xb0,0xb0,0xb0),
-                    Color.FromArgb(0xff,0xc8,0xc8,0xc8),
-                    Color.FromArgb(0xff,0xe0,0xe0,0xe0),
-                    Color.FromArgb(0xff,0xf0,0xf0,0xf0),
-                    Color.FromArgb(0xff,0xff,0xff,0xff)
-                }; 
+                    list.Add(Color.FromArgb(i, 0xff, 0xff, 0xff));
+                }
+                list.Add(Color.White);
+                return list;
             }
         }
         public Bitmap GetBitmap(int width, int height, IReadOnlyList<Color> palitte = null)
         {
-            if(palitte == null)
+            if (palitte == null)
             {
                 palitte = Colors;
             }
@@ -145,6 +148,17 @@ namespace DLFontViewer
 
             return temp;
         }
+        public void writeRow(int row, byte[] dest, int start)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                var val = colors[Image[x, row]];
+                dest[start + x * 4 + 0] = val.R;
+                dest[start + x * 4 + 1] = val.G;
+                dest[start + x * 4+2]= val.B;
+                dest[start + x * 4 + 3] = val.A;
+            }
+        }
         public byte[] Encoded()
         {
             var arr = new byte[Width * Height];
@@ -157,7 +171,7 @@ namespace DLFontViewer
                 }
             }
             var temp = new byte[arr.Length / 2];
-            for(i = 0;i < temp.Length; i++)
+            for (i = 0; i < temp.Length; i++)
             {
                 temp[i] = (byte)((arr[i * 2] << 4) + arr[i * 2 + 1]);
             }
