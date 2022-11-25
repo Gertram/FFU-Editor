@@ -37,10 +37,13 @@ namespace DLFontViewer
 00000000000000000000*/
     public partial class AddSymForm : Form
     {
-        public AddSymForm()
+        public AddSymForm(DLFont font)
         {
             InitializeComponent();
+            this.font = font;
+            
         }
+        DLFont font;
         private int code;
         private ISym sym;
         public int Code
@@ -71,7 +74,7 @@ namespace DLFontViewer
             pictureBox1.Width = SymWidth * scale_size_min;
             this.buff = sym.GetBitmap(pictureBox2.Width, pictureBox2.Height, pallite);
             pictureBox1.Image = sym.GetBitmap(pictureBox1.Width, pictureBox1.Height, pallite);
-
+            
             pictureBox2.Image = this.buff;
         }
         public ISym Sym
@@ -114,7 +117,8 @@ namespace DLFontViewer
                     Color15.BackColor = colors[15];
 
                 }
-                ShowSym();
+                var palitte = this.font.GetPalitte(0);  
+                ShowSym(palitte);
             }
         }
 
@@ -135,32 +139,6 @@ namespace DLFontViewer
         }
         
         
-       /*
-        private void Test()
-        {
-            ImageInfo imi = new ImageInfo(cols, rows, 8, false);
-            // 8 bits per channel, no alpha 
-            // open image for writing to a output stream 
-            PngWriter png = new PngWriter(outputStream, imi);
-            // add some optional metadata (chunks) png.getMetadata().setDpi(100.0); 
-            png.getMetadata().setTimeNow(0);
-            // 0 seconds fron now = now png.getMetadata().setText(PngChunkTextVar.KEY_Title, "just a text image"); 
-            png.getMetadata().setText("my key", "my text");
-            ImageLineInt iline = new ImageLineInt(imi);
-            for (int col = 0; col < imi.cols; col++)
-            {
-                // this line will be written to all rows
-                int r = 255; int g = 127; int b = 255 * col / imi.cols;
-                ImageLineHelper.setPixelRGB8(iline, col, r, g, b);
-                // orange-ish gradient
-            }
-            for (int row = 0; row < png.imgInfo.rows; row++)
-            {
-                png.writeRow(iline);
-            }
-            png.end();
-
-        }*/
         private byte SymWidth => (byte)int.Parse(txtWidth.Text, System.Globalization.NumberStyles.HexNumber);
         private byte SymHeight => (byte)int.Parse(txtHeight.Text, System.Globalization.NumberStyles.HexNumber);
         private void richTextBox1_TextChanged(object sender, EventArgs e)

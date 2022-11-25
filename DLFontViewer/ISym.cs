@@ -19,5 +19,7 @@ namespace DLFontViewer
         IReadOnlyList<Color> Colors { get; }
         byte[,] Image { get; set; }
         byte[] Encoded();
+
+        void writeRow(int row, byte[] dest, int start);
     }
 }

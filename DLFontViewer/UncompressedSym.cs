@@ -14,14 +14,62 @@ namespace DLFontViewer
         static UncompressedSym()
         {
             var list = new Color[16];
-            for (var i = 0; i < 16; i++)
+            /*for (var i = 0; i < 16; i++)
             {
                 list[i] = (Color.FromArgb(0x10 * i, 0xff, 0xff, 0xff));
             }
             list[0] = (Color.FromArgb(0));
-            list[15] = (Color.White);
+            list[15] = (Color.White);*/
+/*          //RED
+            list = new Color[]
+            {
+                Color.FromArgb(0,0,0,0),
+                Color.FromArgb(0x40,0,0,0),
+                Color.FromArgb(0x80,0,0,0),
+                Color.FromArgb(0xa0,0,0,0),
+                Color.FromArgb(0xd8,0,0,0),
+                Color.FromArgb(0xff,0,0,0),
+                Color.FromArgb(0xff,0x0a,0x0a,0x14),
+                Color.FromArgb(0xff,0x15,0x14,0x28),
+                Color.FromArgb(0xff,0x20,0x1e,0x3c),
+                Color.FromArgb(0xff,0x2a,0x28,0x50),
+                Color.FromArgb(0xff,0x35,0x32,0x65),
+                Color.FromArgb(0xff,0x3f,0x3c,79),
+                Color.FromArgb(0xff,0x4a,0x46,0x8d),
+                Color.FromArgb(0xff,0x54,0x50,0xa1),
+                Color.FromArgb(0xff,0x5f,0x5b,0xb6),
+                Color.FromArgb(0xff,0x6a,0x65,0xca)
+            };*/
+            //BLUE
+            list = new Color[]
+            {
+                Color.FromArgb(0,0,0,0),
+                Color.FromArgb(0x40,0,0,0),
+                Color.FromArgb(0x80,0,0,0),
+                Color.FromArgb(0xa0,0,0,0),
+                Color.FromArgb(0xd8,0,0,0),
+                Color.FromArgb(0xff,0,0,0),
+                Color.FromArgb(0xff,0x17,0x14,0x0e),
+                Color.FromArgb(0xff,0x2e,0x28,0x1c),
+                Color.FromArgb(0xff,0x45,0x3c,0x2b),
+                Color.FromArgb(0xff,0x5c,0x50,0x39),
+                Color.FromArgb(0xff,0x73,0x64,0x47),
+                Color.FromArgb(0xff,0x8a,0x78,0x55),
+                Color.FromArgb(0xff,0xa2,0x8c,0x64),
+                Color.FromArgb(0xff,0xb8,0xa0,0x72),
+                Color.FromArgb(0xff,0xd0,0xb4,0x80),
+                Color.FromArgb(0xff,0xe7,0xc8,0x8f),
+            };
+
+            for(var i = 0;i < 16; i++)
+            {
+                var color = list[i];
+                list[i] = Color.FromArgb(color.A,color.B, color.G, color.R);
+            }
+
             colors = list;
         }
+        public static Color[] colors;
         public byte Width { get; set; }
         public byte Height { get; set; }
         public byte[,] Image { get; set; }
@@ -80,7 +128,6 @@ namespace DLFontViewer
             this.Image = matrix;
 
         }
-        private static Color[] colors;
 
         internal byte[] ToArray()
         {
@@ -152,11 +199,7 @@ namespace DLFontViewer
         {
             for (int x = 0; x < Width; x++)
             {
-                var val = colors[Image[x, row]];
-                dest[start + x * 4 + 0] = val.R;
-                dest[start + x * 4 + 1] = val.G;
-                dest[start + x * 4+2]= val.B;
-                dest[start + x * 4 + 3] = val.A;
+                dest[start + x] = Image[x, row];
             }
         }
         public byte[] Encoded()
