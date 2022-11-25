@@ -32,7 +32,7 @@ namespace DLFontViewer
         {
             if (e.KeyCode == Keys.R && e.Modifiers == Keys.Control)
             {
-                var form = new AddSymForm();
+                var form = new AddSymForm(font);
                 var sym = font.symbols.ElementAt(current);
                 form.Code = sym.Key;
                 form.Sym = sym.Value;
@@ -536,7 +536,7 @@ namespace DLFontViewer
 
         private void btnAddNew_Click(object sender, EventArgs e)
         {
-            var form = new AddSymForm();
+            var form = new AddSymForm(font);
             if (form.ShowDialog() != DialogResult.OK)
             {
                 return;
@@ -547,7 +547,7 @@ namespace DLFontViewer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var form = new AddSymForm();
+            var form = new AddSymForm(font);
             var sym = font.symbols.ElementAt(current);
             form.Code = sym.Key;
             form.Sym = sym.Value;
@@ -889,6 +889,43 @@ namespace DLFontViewer
             sym.Image = temp;
             sym.Width = width;
         }
+        int FindBottomBorder(ISym sym)
+        {
+            for (int y = 0; y < sym.Height; y++)
+            {
+                var found = false;
+                for (int x = sym.Width - 1; x >= 0; x--)
+                {
+                    found = sym.Image[x, y] != 0;
+                }
+                if (!found)
+                {
+                    return y;
+                }
+            }
+            
+            return -1;
+        }
+        private void CutSym(ISym sym, int width, int height)
+        {
+            if (width > sym.Width)
+            {
+                width = sym.Width;
+            }
+       
+            var temp = new byte[width, height];
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    temp[x, y] = sym.Image[x, y];
+                }
+            }
+            sym.Image = temp;
+            sym.Height = (byte)height;
+            sym.Width = (byte)width;
+        }
         private void CutSymsToolStripMenuItem_Click(object sender, EventArgs e)
         {/*
             var win = new CutSymsForm();
@@ -915,7 +952,7 @@ namespace DLFontViewer
             }*/
             ShowRusSymsImage();
         }
-        private byte[,] NewPallitte(byte[,] image)
+        private byte[,] NewPalitte(byte[,] image)
         {
             var height = image.GetLength(0);
             var width = image.GetLength(1);
@@ -927,7 +964,7 @@ namespace DLFontViewer
                     var value = image[y, x];
                     if (value != 0)
                     {
-                        temp[y, x] = (byte)(value >> 1);
+                        temp[y, x] = (byte)(value * 7 / 15);//(byte)(value >> 1);
                     }
                 }
             }
@@ -936,45 +973,26 @@ namespace DLFontViewer
         private void anotherUncompressToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            var data = File.ReadAllBytes("D:\\Diabolik lovers\\Work\\DL\\font\\advfont24x30.ffu");
+            //var data = File.ReadAllBytes("D:\\Diabolik lovers\\Work\\DL\\font\\advfont24x30.ffu");
+            var data = File.ReadAllBytes("D:\\PSP\\Wolves\\VITA\\font\\window\\font\\sysfont.ffu");
             var tempFont = LoadFont<UncompressedSym>(data);
-            foreach (var sym in tempFont.symbols.Where(x => x.Key >= 'A' && x.Key <= 'Z' || x.Key >= 'a' && x.Key <= 'z'))
+
+            //font.symbols = new SortedDictionary<int, ISym>(font.symbols.Take(font.symbols.Count / 4).ToDictionary(x => x.Key, x => x.Value));
+
+
+            foreach (var pair in tempFont.symbols)
             {
-                font.symbols[sym.Key] = sym.Value;
+                if (font.symbols.ContainsKey(pair.Key) || pair.Key >= 0x8440 && pair.Key <= 0x8491)
+                {
+                    var temp = new CompressedSym();
+                    temp.Width = pair.Value.Width;
+                    temp.Image = NewPalitte(tempFont.symbols[pair.Key].Image);
+                    CutSym(temp, 0x20,0x1e);
+                    font.symbols[pair.Key] = temp;
+                }
             }
-            /* foreach (var sym in tempFont.symbols.Where(x => x.Key >= 0x8440 && x.Key <= 0x8460))
-             {
-                 CutSym(sym.Value, 12);
-             }
-             foreach (var sym in tempFont.symbols.Where(x => x.Key >= 0x8470 && x.Key <= 0x8491))
-             {
-                 CutSym(sym.Value, 10);
-             }
-             foreach (var item in tempFont.symbols)
-             {
-                 if (font.symbols.TryGetValue(item.Key, out var sym))
-                 {*//*
-                     sym.Image = NewPallitte(item.Value.Image);
-                     sym.Height = item.Value.Height;
-                     sym.Width = item.Value.Width;*//*
-                     if (item.Key >= 0x8440 && item.Key <= 0x8491 || item.Key >= 0x41 && item.Key <= 0x5a || item.Key >= 0x61 && item.Key <= 0x7a)
-                     {
-                         var left = (int)Math.Ceiling(FindLeftBorder(item.Value) * 24.0f / 29.0f);
-                         var right = (int)Math.Ceiling((item.Value.Width - FindRightBorder(item.Value)) * 24.0f / 29.0f);
 
-                         SymPadding(sym, left, right);
-                     }
-                 }
-                 else
-                 {
-
-                 }
-
-             }*//*
-             foreach (var sym in font.symbols.Where(x => x.Key >= 0x8440 && x.Key <= 0x8491))
-             {
-
-             }*/
+            
             var buff = new List<int>();
             foreach (var item in font.symbols)
             {
@@ -1091,58 +1109,108 @@ namespace DLFontViewer
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
         }
-
+        private char ToChar(int num)
+        {
+            if(num < 256)
+            {
+                return encoding.GetChars(new byte[] { (byte)(num) })[0];
+            }
+            return encoding.GetChars(new byte[] { (byte)(num >> 8), (byte)(num & 0xff) })[0];
+        }
         private void pNGToolStripMenuItem_Click(object sender, EventArgs e)
         {
             /*foreach(var sym in this.font.symbols)
             {
                 var bitmap = sym.Value.GetBitmap();
             }*/
-            var symbols = font.symbols.Select(x => x.Value as UncompressedSym).ToArray();
-            int symInRow = (int)Math.Floor(Math.Sqrt(font.symbols.Count));
-            int rows = font.symbols.Count / symInRow;
-            const int symWidth = 0x40;
-            const int symHeight = 0x4a;
+            var symbols = font.symbols/*.Where(x => x.Key <=127 || x.Key >= 0x8440 && x.Key <= 0x8494)*/.Select(x => x.Value).ToArray();
+            var symbols2 = font.symbols/*.Where(x => x.Key <= 127 || x.Key >= 0x8440 && x.Key <= 0x8494)*/.ToArray();
+            int symInRow = (int)Math.Ceiling(Math.Sqrt(symbols.Length));
+            int rows = (int)Math.Ceiling((float)(symbols.Length) / (float)(symInRow));
+            const int symWidth = 32;//29;
+            const int symHeight = 37;//0x4a; ;
             int width = symInRow * symWidth;
             int height = rows * symHeight;
             //var image = Indexed();
-            var info = new Hjg.Pngcs.ImageInfo(width, height, 8, true);
+            var info = new Hjg.Pngcs.ImageInfo(width, height, 8, false, false, true);
 
-            var stream = File.OpenWrite("export.png");
-            var writer = new Hjg.Pngcs.PngWriter(stream, info);
-            try
+            var chunk = new Hjg.Pngcs.Chunks.PngChunkPLTE(info);
+            chunk.SetNentries(UncompressedSym.colors.Length);
+            var tchunk = new Hjg.Pngcs.Chunks.PngChunkTRNS(info);
+            var alpha = new int[UncompressedSym.colors.Length];
+            for (int i = 0; i < UncompressedSym.colors.Length; i++)
             {
-                //writer.CompLevel = 9;
-                var raw = new byte[width*4];
-                for (int j = 0; j < rows; j++)
-                {
-                    for (var y = 0; y < symHeight; y++)
-                    {
-                        for (int i = 0; i < symInRow && j*symInRow+i < symbols.Length; i++)
-                        {
-                            var sym = symbols[i+symInRow*j];
-                            var padLeft = (symWidth - sym.Width) / 2;
-                            var padRight = (symWidth - sym.Width - padLeft);
-                            var x_offset = i * symWidth*4;
-
-                            for (var x = 0; x < padLeft*4; x++)
-                            {
-                                raw[x + x_offset] = 0;
-                            }
-                            for (var x = (symWidth - padRight)*4; x < symWidth*4; x++)
-                            {
-                                raw[x + x_offset] = 0;
-                            }
-                            sym.writeRow(y, raw, padLeft*4 + x_offset);
-                        }
-                        writer.WriteRowByte(raw, y+j*symHeight);
-                    }
-                }
-                writer.End();
+                var color = UncompressedSym.colors[i];
+                alpha[i] = color.A;
+                chunk.SetEntry(i, color.R, color.G, color.B);
             }
-            finally
+            tchunk.SetPalletteAlpha(alpha);
+            var stream = File.OpenWrite("export.png");
+            using (var file = new StreamWriter("export.xml",false))
             {
-                stream.Close();
+                file.WriteLine("<font>");
+                file.WriteLine($"<info face =\"Desyrel\" size=\"{symHeight}\" charset=\"unicode\" />");
+                file.WriteLine($"<common lineHeight=\"{symHeight}\" base=\"{symHeight}\" scaleW=\"{width}\" scaleH=\"{height}\" pages=\"1\" />");
+                file.WriteLine("<pages>");
+                file.WriteLine("<page id=\"0\" file=\"export.png\" />");
+                file.WriteLine("</pages >");
+                file.WriteLine($"<chars count=\"{symbols.Length}\" >");
+                var num = 0;
+                foreach(var sym in symbols2)
+                {
+                    var letter = ToChar(sym.Key);
+                    var swidth = sym.Value.Width;
+                    var padLeft = (symWidth - swidth)/2;
+                    var x = (num % symInRow) * symWidth+padLeft;
+                    var y = num / symInRow * symHeight;
+                    file.WriteLine($"<char id=\"{(int)letter}\" x=\"{x}\" y=\"{y}\" width=\"{swidth}\" height=\"{symHeight}\" xoffset=\"0\" yoffset=\"0\" xadvance=\"{swidth}\" />");
+                    num++;
+                }
+                file.WriteLine("</chars>");
+                file.WriteLine("</font>");
+                file.Close();
+                var writer = new Hjg.Pngcs.PngWriter(stream, info);
+                try
+                {
+                    writer.GetChunksList().Queue(chunk);
+                    writer.GetChunksList().Queue(tchunk);
+                    writer.CompLevel = 9;
+                    var raw = new byte[width];
+                    var line = new byte[width / 2];
+                    for (int j = 0; j < rows; j++)
+                    {
+                        for (var y = 0; y < symHeight; y++)
+                        {
+                            for (int i = 0; i < symInRow && j * symInRow + i < symbols.Length; i++)
+                            {
+                                var sym = symbols[i + symInRow * j];
+                                var padLeft = (symWidth - sym.Width) / 2;
+                                var padRight = (symWidth - sym.Width - padLeft);
+                                var x_offset = i * symWidth;
+
+                                for (var x = 0; x < padLeft; x++)
+                                {
+                                    raw[x + x_offset] = 0;
+                                }
+                                for (var x = (symWidth - padRight); x < symWidth; x++)
+                                {
+                                    raw[x + x_offset] = 0;
+                                }
+                                sym.writeRow(y, raw, padLeft + x_offset);
+                            }
+                            /*for(var x = 0; x < width/2; x++)
+                            {
+                                line[x] = (byte)((raw[x] << 4) + raw[x + 1]);
+                            }*/
+                            writer.WriteRowByte(raw, y + j * symHeight);
+                        }
+                    }
+                    writer.End();
+                }
+                finally
+                {
+                    stream.Close();
+                }
             }
         }
     }

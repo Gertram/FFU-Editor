@@ -9,6 +9,19 @@ namespace DLFontViewer
 {
     public class CompressedSym : ISym
     {
+        static CompressedSym()
+        {
+            /*var list = new Color[8];
+            for (var i = 0; i < 8; i++)
+            {
+                list[i] = (Color.FromArgb(0x20 * i, 0xff, 0xff, 0xff));
+            }
+            list[0] = (Color.FromArgb(0));
+            list[15] = (Color.White);
+            colors = list;*/
+            colors = CompressedSym.Palitte;
+        }
+        public static Color[] colors;
         public byte Width { get; set; }
         public byte Height { get;  set; }
         public byte[,] Image { get; set; }
@@ -22,13 +35,7 @@ namespace DLFontViewer
             width = (byte)(temp.Length / height);
             byte[,] matrix = new byte[width, height];
 
-            /*var temp = new List<byte>();
-            for (int i = 0; i < length; i++)
-            {
-                var val = data[i + seek];
-                temp.Add((byte)(val >> 4));
-                temp.Add((byte)(val & 0x0f));
-            }*/
+           
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
@@ -36,34 +43,10 @@ namespace DLFontViewer
                     matrix[x, y] = temp[y * width + x];
                 }
             }
-
-            /* }
-             else
-             {*//*
-                 var buf = width;
-                 width = height;
-                 height = buf;*//*
-                 matrix = new byte[width, height];
-
-                 var temp = new List<byte>();
-                 for (int i = 0; i < length; i++)
-                 {
-                     var val = data[i + seek];
-                     temp.Add((byte)(val >> 4));
-                     temp.Add((byte)(val & 0x0f));
-                 }
-
-                 for (int y = 0; y < height; y++)
-                 {
-                     for (int x = 0; x < width; x++)
-                     {
-                         matrix[x, y] = temp[y * width + x];
-                     }
-                 }
-             }*/
-            this.Width = width;
-            this.Height = height;
-            this.Image = matrix;
+          
+            Width = width;
+            Height = height;
+            Image = matrix;
         }
 
         internal byte[] ToArray()
@@ -82,14 +65,14 @@ namespace DLFontViewer
         }
         private static Color[] Palitte = new Color[]
         {
-            Color.FromArgb(0,0,0,0),
-            Color.FromArgb(0x80,0,0,0),
-            Color.FromArgb(0xd8,0,0,0),
+            Color.FromArgb(0,0,0,0),//32
+            Color.FromArgb(0x80,0,0,0),//96
+            Color.FromArgb(0xd8,0,0,0),//192
             Color.FromArgb(0xff,0,0,0),
-            Color.FromArgb(0x88,0x88,0x88),
-            Color.FromArgb(0xb0,0xb0,0xb0),
-            Color.FromArgb(0xe0,0xe0,0xe0),
-            Color.FromArgb(0xff,0xff,0xff)
+            Color.FromArgb(0xff,0x50,0x50,0x50),
+            Color.FromArgb(0xff,0x98,0x98,0x98),
+            Color.FromArgb(0xff,0xe0,0xe0,0xe0),
+            Color.FromArgb(0xff,0xff,0xff,0xff)
         };
         public IReadOnlyList<Color> Colors { get => Palitte; }
         public Bitmap GetBitmap(int width, int height, IReadOnlyList<Color> palitte = null)
@@ -98,18 +81,32 @@ namespace DLFontViewer
             {
                 palitte = Palitte;
             }
-            var temp = new Bitmap(width, height);
+            if(palitte.Count == 16)
+            {
+                var temp = new Color[8];
+                temp[0] = palitte[0];
+                temp[1] = palitte[2];
+                temp[2] = palitte[4];
+                temp[3] = palitte[5];
+                temp[4] = palitte[7];
+                temp[5] = palitte[10];
+                temp[6] = palitte[13];
+                temp[7] = palitte[15];
+                palitte = temp;
+
+            }
+            var bitmap = new Bitmap(width, height);
             var resx = width / Width;
             var resy = height / Height;
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
-                    temp.SetPixel(x, y, palitte[Image[x / resx, y / resy]]);
+                    bitmap.SetPixel(x, y, palitte[Image[x / resx, y / resy]]);
                 }
             }
 
-            return temp;
+            return bitmap;
         }
         public Bitmap GetBitmap(IReadOnlyList<Color> palitte = null)
         {
@@ -131,6 +128,14 @@ namespace DLFontViewer
         public byte[] Encoded()
         {
             return Codek.encode(ToArray());
+        }
+
+        public void writeRow(int row, byte[] dest, int start)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                dest[start + x] = Image[x, row];
+            }
         }
     }
 }

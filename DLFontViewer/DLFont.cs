@@ -27,7 +27,10 @@ namespace DLFontViewer
         public byte[] Footer = new byte[0];
         public static int counter = 0;
         private static int last_seek;
-
+        public Color[] GetPalitte(int index = 0)
+        {
+            return palitte.Skip(index * 16).Take(16).ToArray();
+        }
         public static DLFont LoadFont<T>(byte[] data) where T : ISym, new()
         {
             var font = new DLFont
@@ -63,7 +66,7 @@ namespace DLFontViewer
             header.SymImageAddr = BitConverter.ToInt32(data,28);
             header.par1 = BitConverter.ToInt32(data,32);
             header.par2 = BitConverter.ToInt32(data,36);
-            return header;
+            return header;  
         }
         private static Color[] LoadPallite(byte[] data, int seek, int count)
         {
