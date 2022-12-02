@@ -1,4 +1,4 @@
-﻿namespace DLFontViewer
+﻿namespace FFU_Editor
 {
     partial class AddSymForm
     {
@@ -28,94 +28,124 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
-            this.AddButton = new System.Windows.Forms.Button();
+            this.SymCodeMaskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.txtWidth = new System.Windows.Forms.TextBox();
             this.txtHeight = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.LeftSizeTextBox = new System.Windows.Forms.TextBox();
-            this.RightCutSize = new System.Windows.Forms.TextBox();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.Color0 = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.Color15 = new System.Windows.Forms.Button();
-            this.Color7 = new System.Windows.Forms.Button();
-            this.Color6 = new System.Windows.Forms.Button();
-            this.Color5 = new System.Windows.Forms.Button();
-            this.Color3 = new System.Windows.Forms.Button();
-            this.Color2 = new System.Windows.Forms.Button();
-            this.Color1 = new System.Windows.Forms.Button();
-            this.Color4 = new System.Windows.Forms.Button();
-            this.Color8 = new System.Windows.Forms.Button();
-            this.Color9 = new System.Windows.Forms.Button();
-            this.Color10 = new System.Windows.Forms.Button();
-            this.Color11 = new System.Windows.Forms.Button();
-            this.Color12 = new System.Windows.Forms.Button();
-            this.Color13 = new System.Windows.Forms.Button();
-            this.Color14 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.BorderWidth = new System.Windows.Forms.TextBox();
-            this.LeftPadding = new System.Windows.Forms.NumericUpDown();
-            this.button3 = new System.Windows.Forms.Button();
-            this.RightPadding = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LeftPadding)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RightPadding)).BeginInit();
+            this.smallIcon = new System.Windows.Forms.PictureBox();
+            this.bigIcon = new System.Windows.Forms.PictureBox();
+            this.CutButton = new System.Windows.Forms.Button();
+            this.ExpandLeftTextBox = new System.Windows.Forms.NumericUpDown();
+            this.ExpandButton = new System.Windows.Forms.Button();
+            this.ExpandRightTextBox = new System.Windows.Forms.NumericUpDown();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.CutBottomTextBox = new System.Windows.Forms.NumericUpDown();
+            this.CutTopTextBox = new System.Windows.Forms.NumericUpDown();
+            this.CutLeftLabel = new System.Windows.Forms.Label();
+            this.CutRightLabel = new System.Windows.Forms.Label();
+            this.CutRightTextBox = new System.Windows.Forms.NumericUpDown();
+            this.CutBottomLabel = new System.Windows.Forms.Label();
+            this.CutTopLabel = new System.Windows.Forms.Label();
+            this.CutLeftTextBox = new System.Windows.Forms.NumericUpDown();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.ExpandBottomTextBox = new System.Windows.Forms.NumericUpDown();
+            this.ExpandTopTextBox = new System.Windows.Forms.NumericUpDown();
+            this.ExpandLeftLabel = new System.Windows.Forms.Label();
+            this.ExpandRightLabel = new System.Windows.Forms.Label();
+            this.ExpandBottomLabel = new System.Windows.Forms.Label();
+            this.ExpandTopLabel = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.PaddingButton = new System.Windows.Forms.Button();
+            this.PaddingRightTextBox = new System.Windows.Forms.NumericUpDown();
+            this.PaddingBottomTextBox = new System.Windows.Forms.NumericUpDown();
+            this.PaddingLeftTextBox = new System.Windows.Forms.NumericUpDown();
+            this.PaddingTopTextBox = new System.Windows.Forms.NumericUpDown();
+            this.PaddingLeftLabel = new System.Windows.Forms.Label();
+            this.PaddingRightLabel = new System.Windows.Forms.Label();
+            this.PaddingBottomLabel = new System.Windows.Forms.Label();
+            this.PaddingTopLabel = new System.Windows.Forms.Label();
+            this.SelectBackgroundLabel = new System.Windows.Forms.Label();
+            this.SelectPalitteLabel = new System.Windows.Forms.Label();
+            this.SelectPalitteComboBox = new System.Windows.Forms.ComboBox();
+            this.SelectBackgroundComboBox = new System.Windows.Forms.ComboBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.NextButton = new System.Windows.Forms.Button();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.PrevButton = new System.Windows.Forms.Button();
+            this.DrawText = new System.Windows.Forms.Button();
+            this.CurrentColorTextBox = new System.Windows.Forms.NumericUpDown();
+            this.CurrentColorLabel = new System.Windows.Forms.Label();
+            this.CurrentColorPictureBox = new System.Windows.Forms.PictureBox();
+            this.ScaleLabel = new System.Windows.Forms.Label();
+            this.ScaleTextBox = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.smallIcon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bigIcon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ExpandLeftTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ExpandRightTextBox)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CutBottomTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CutTopTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CutRightTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CutLeftTextBox)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ExpandBottomTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ExpandTopTextBox)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PaddingRightTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PaddingBottomTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PaddingLeftTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PaddingTopTextBox)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentColorTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentColorPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScaleTextBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // maskedTextBox1
+            // SymCodeMaskedTextBox
             // 
-            this.maskedTextBox1.Location = new System.Drawing.Point(23, 43);
-            this.maskedTextBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.maskedTextBox1.Mask = "AAAA";
-            this.maskedTextBox1.Name = "maskedTextBox1";
-            this.maskedTextBox1.Size = new System.Drawing.Size(125, 22);
-            this.maskedTextBox1.TabIndex = 0;
-            // 
-            // AddButton
-            // 
-            this.AddButton.Location = new System.Drawing.Point(23, 176);
-            this.AddButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(94, 23);
-            this.AddButton.TabIndex = 1;
-            this.AddButton.Text = "Добавить";
-            this.AddButton.UseVisualStyleBackColor = true;
-            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
+            this.SymCodeMaskedTextBox.Location = new System.Drawing.Point(9, 37);
+            this.SymCodeMaskedTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.SymCodeMaskedTextBox.Mask = "AAAA";
+            this.SymCodeMaskedTextBox.Name = "SymCodeMaskedTextBox";
+            this.SymCodeMaskedTextBox.Size = new System.Drawing.Size(125, 22);
+            this.SymCodeMaskedTextBox.TabIndex = 0;
+            this.SymCodeMaskedTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SymCodeMaskedTextBox_KeyDown);
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(188, 10);
+            this.richTextBox1.Location = new System.Drawing.Point(165, 103);
             this.richTextBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(458, 301);
+            this.richTextBox1.Size = new System.Drawing.Size(386, 330);
             this.richTextBox1.TabIndex = 2;
             this.richTextBox1.Text = "";
-            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // txtWidth
             // 
-            this.txtWidth.Location = new System.Drawing.Point(23, 86);
+            this.txtWidth.Location = new System.Drawing.Point(9, 96);
             this.txtWidth.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtWidth.Name = "txtWidth";
+            this.txtWidth.ReadOnly = true;
             this.txtWidth.Size = new System.Drawing.Size(125, 22);
             this.txtWidth.TabIndex = 3;
             this.txtWidth.Text = "14";
             // 
             // txtHeight
             // 
-            this.txtHeight.Location = new System.Drawing.Point(23, 137);
+            this.txtHeight.Location = new System.Drawing.Point(9, 155);
             this.txtHeight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtHeight.Name = "txtHeight";
+            this.txtHeight.ReadOnly = true;
             this.txtHeight.Size = new System.Drawing.Size(125, 22);
             this.txtHeight.TabIndex = 4;
             this.txtHeight.Text = "14";
@@ -123,351 +153,681 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 67);
+            this.label1.Location = new System.Drawing.Point(6, 70);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(117, 16);
+            this.label1.Size = new System.Drawing.Size(118, 17);
             this.label1.TabIndex = 5;
             this.label1.Text = "Ширина символа";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 110);
+            this.label2.Location = new System.Drawing.Point(6, 132);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(114, 16);
+            this.label2.Size = new System.Drawing.Size(116, 17);
             this.label2.TabIndex = 6;
             this.label2.Text = "Высота символа";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(23, 25);
+            this.label3.Location = new System.Drawing.Point(6, 18);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(90, 16);
+            this.label3.Size = new System.Drawing.Size(92, 17);
             this.label3.TabIndex = 7;
             this.label3.Text = "Код символа";
             // 
-            // pictureBox1
+            // smallIcon
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(21, 224);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(127, 86);
-            this.pictureBox1.TabIndex = 8;
-            this.pictureBox1.TabStop = false;
+            this.smallIcon.BackColor = System.Drawing.Color.Black;
+            this.smallIcon.Location = new System.Drawing.Point(9, 196);
+            this.smallIcon.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.smallIcon.Name = "smallIcon";
+            this.smallIcon.Size = new System.Drawing.Size(127, 102);
+            this.smallIcon.TabIndex = 8;
+            this.smallIcon.TabStop = false;
             // 
-            // pictureBox2
+            // bigIcon
             // 
-            this.pictureBox2.BackColor = System.Drawing.Color.Black;
-            this.pictureBox2.Location = new System.Drawing.Point(681, 14);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(411, 296);
-            this.pictureBox2.TabIndex = 9;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox2_MouseDown);
-            this.pictureBox2.MouseLeave += new System.EventHandler(this.pictureBox2_MouseLeave);
-            this.pictureBox2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseMove);
-            this.pictureBox2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox2_MouseUp);
+            this.bigIcon.BackColor = System.Drawing.Color.Black;
+            this.bigIcon.Location = new System.Drawing.Point(557, 103);
+            this.bigIcon.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.bigIcon.Name = "bigIcon";
+            this.bigIcon.Size = new System.Drawing.Size(362, 328);
+            this.bigIcon.TabIndex = 9;
+            this.bigIcon.TabStop = false;
+            this.bigIcon.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BigIcon_MouseDown);
+            this.bigIcon.MouseEnter += new System.EventHandler(this.BigIcon_MouseEnter);
+            this.bigIcon.MouseLeave += new System.EventHandler(this.BigIcon_MouseLeave);
+            this.bigIcon.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseMove);
+            this.bigIcon.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BigIcon_MouseUp);
             // 
-            // button1
+            // CutButton
             // 
-            this.button1.Location = new System.Drawing.Point(1237, 86);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Cut";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.tableLayoutPanel2.SetColumnSpan(this.CutButton, 2);
+            this.CutButton.Location = new System.Drawing.Point(131, 75);
+            this.CutButton.Name = "CutButton";
+            this.CutButton.Size = new System.Drawing.Size(119, 30);
+            this.CutButton.TabIndex = 10;
+            this.CutButton.Text = "Применить";
+            this.CutButton.UseVisualStyleBackColor = true;
+            this.CutButton.Click += new System.EventHandler(this.CutButton_Click);
             // 
-            // LeftSizeTextBox
+            // ExpandLeftTextBox
             // 
-            this.LeftSizeTextBox.Location = new System.Drawing.Point(1176, 43);
-            this.LeftSizeTextBox.Name = "LeftSizeTextBox";
-            this.LeftSizeTextBox.Size = new System.Drawing.Size(58, 22);
-            this.LeftSizeTextBox.TabIndex = 11;
-            this.LeftSizeTextBox.Text = "0";
+            this.ExpandLeftTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.ExpandLeftTextBox.Location = new System.Drawing.Point(67, 6);
+            this.ExpandLeftTextBox.Name = "ExpandLeftTextBox";
+            this.ExpandLeftTextBox.Size = new System.Drawing.Size(58, 22);
+            this.ExpandLeftTextBox.TabIndex = 17;
             // 
-            // RightCutSize
+            // ExpandButton
             // 
-            this.RightCutSize.Location = new System.Drawing.Point(1257, 43);
-            this.RightCutSize.Name = "RightCutSize";
-            this.RightCutSize.Size = new System.Drawing.Size(65, 22);
-            this.RightCutSize.TabIndex = 12;
-            this.RightCutSize.Text = "0";
+            this.tableLayoutPanel3.SetColumnSpan(this.ExpandButton, 2);
+            this.ExpandButton.Location = new System.Drawing.Point(131, 73);
+            this.ExpandButton.Name = "ExpandButton";
+            this.ExpandButton.Size = new System.Drawing.Size(122, 29);
+            this.ExpandButton.TabIndex = 18;
+            this.ExpandButton.Text = "Применить";
+            this.ExpandButton.UseVisualStyleBackColor = true;
+            this.ExpandButton.Click += new System.EventHandler(this.ExpandButton_Click);
             // 
-            // Color0
+            // ExpandRightTextBox
             // 
-            this.Color0.Location = new System.Drawing.Point(3, 3);
-            this.Color0.Name = "Color0";
-            this.Color0.Size = new System.Drawing.Size(75, 25);
-            this.Color0.TabIndex = 13;
-            this.Color0.Text = "Цвет 0";
-            this.Color0.UseVisualStyleBackColor = true;
-            this.Color0.Click += new System.EventHandler(this.SelectColor_Click);
+            this.ExpandRightTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.ExpandRightTextBox.Location = new System.Drawing.Point(195, 6);
+            this.ExpandRightTextBox.Name = "ExpandRightTextBox";
+            this.ExpandRightTextBox.Size = new System.Drawing.Size(58, 22);
+            this.ExpandRightTextBox.TabIndex = 19;
             // 
-            // tableLayoutPanel1
+            // groupBox1
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.tableLayoutPanel1.Controls.Add(this.Color15, 1, 7);
-            this.tableLayoutPanel1.Controls.Add(this.Color7, 0, 7);
-            this.tableLayoutPanel1.Controls.Add(this.Color6, 0, 6);
-            this.tableLayoutPanel1.Controls.Add(this.Color5, 0, 5);
-            this.tableLayoutPanel1.Controls.Add(this.Color3, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.Color2, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.Color1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.Color0, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.Color4, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.Color8, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.Color9, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.Color10, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.Color11, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.Color12, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.Color13, 1, 5);
-            this.tableLayoutPanel1.Controls.Add(this.Color14, 1, 6);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(1122, 193);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 8;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 254);
-            this.tableLayoutPanel1.TabIndex = 14;
+            this.groupBox1.Controls.Add(this.tableLayoutPanel2);
+            this.groupBox1.Location = new System.Drawing.Point(1049, 338);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(281, 152);
+            this.groupBox1.TabIndex = 21;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Уменьшить на";
             // 
-            // Color15
+            // tableLayoutPanel2
             // 
-            this.Color15.Location = new System.Drawing.Point(113, 220);
-            this.Color15.Name = "Color15";
-            this.Color15.Size = new System.Drawing.Size(75, 25);
-            this.Color15.TabIndex = 28;
-            this.Color15.Text = "Цвет 15";
-            this.Color15.UseVisualStyleBackColor = true;
-            this.Color15.Click += new System.EventHandler(this.SelectColor_Click);
+            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel2.Controls.Add(this.CutBottomTextBox, 3, 1);
+            this.tableLayoutPanel2.Controls.Add(this.CutTopTextBox, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.CutLeftLabel, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.CutRightLabel, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.CutRightTextBox, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.CutBottomLabel, 2, 1);
+            this.tableLayoutPanel2.Controls.Add(this.CutTopLabel, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.CutLeftTextBox, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.CutButton, 2, 2);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(11, 21);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 3;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(256, 108);
+            this.tableLayoutPanel2.TabIndex = 15;
             // 
-            // Color7
+            // CutBottomTextBox
             // 
-            this.Color7.Location = new System.Drawing.Point(3, 220);
-            this.Color7.Name = "Color7";
-            this.Color7.Size = new System.Drawing.Size(75, 23);
-            this.Color7.TabIndex = 20;
-            this.Color7.Text = "Цвет 7";
-            this.Color7.UseVisualStyleBackColor = true;
-            this.Color7.Click += new System.EventHandler(this.SelectColor_Click);
+            this.CutBottomTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.CutBottomTextBox.Location = new System.Drawing.Point(195, 43);
+            this.CutBottomTextBox.Name = "CutBottomTextBox";
+            this.CutBottomTextBox.Size = new System.Drawing.Size(57, 22);
+            this.CutBottomTextBox.TabIndex = 16;
             // 
-            // Color6
+            // CutTopTextBox
             // 
-            this.Color6.Location = new System.Drawing.Point(3, 189);
-            this.Color6.Name = "Color6";
-            this.Color6.Size = new System.Drawing.Size(75, 23);
-            this.Color6.TabIndex = 19;
-            this.Color6.Text = "Цвет 6";
-            this.Color6.UseVisualStyleBackColor = true;
-            this.Color6.Click += new System.EventHandler(this.SelectColor_Click);
+            this.CutTopTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.CutTopTextBox.Location = new System.Drawing.Point(68, 43);
+            this.CutTopTextBox.Name = "CutTopTextBox";
+            this.CutTopTextBox.Size = new System.Drawing.Size(56, 22);
+            this.CutTopTextBox.TabIndex = 15;
             // 
-            // Color5
+            // CutLeftLabel
             // 
-            this.Color5.Location = new System.Drawing.Point(3, 158);
-            this.Color5.Name = "Color5";
-            this.Color5.Size = new System.Drawing.Size(75, 23);
-            this.Color5.TabIndex = 18;
-            this.Color5.Text = "Цвет 5";
-            this.Color5.UseVisualStyleBackColor = true;
-            this.Color5.Click += new System.EventHandler(this.SelectColor_Click);
+            this.CutLeftLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CutLeftLabel.AutoSize = true;
+            this.CutLeftLabel.Location = new System.Drawing.Point(3, 0);
+            this.CutLeftLabel.Name = "CutLeftLabel";
+            this.CutLeftLabel.Size = new System.Drawing.Size(58, 36);
+            this.CutLeftLabel.TabIndex = 0;
+            this.CutLeftLabel.Text = "Слева";
+            this.CutLeftLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Color3
+            // CutRightLabel
             // 
-            this.Color3.Location = new System.Drawing.Point(3, 96);
-            this.Color3.Name = "Color3";
-            this.Color3.Size = new System.Drawing.Size(75, 23);
-            this.Color3.TabIndex = 16;
-            this.Color3.Text = "Цвет 3";
-            this.Color3.UseVisualStyleBackColor = true;
-            this.Color3.Click += new System.EventHandler(this.SelectColor_Click);
+            this.CutRightLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CutRightLabel.AutoSize = true;
+            this.CutRightLabel.Location = new System.Drawing.Point(131, 0);
+            this.CutRightLabel.Name = "CutRightLabel";
+            this.CutRightLabel.Size = new System.Drawing.Size(58, 36);
+            this.CutRightLabel.TabIndex = 1;
+            this.CutRightLabel.Text = "Справа";
+            this.CutRightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Color2
+            // CutRightTextBox
             // 
-            this.Color2.Location = new System.Drawing.Point(3, 65);
-            this.Color2.Name = "Color2";
-            this.Color2.Size = new System.Drawing.Size(75, 23);
-            this.Color2.TabIndex = 15;
-            this.Color2.Text = "Цвет 2";
-            this.Color2.UseVisualStyleBackColor = true;
-            this.Color2.Click += new System.EventHandler(this.SelectColor_Click);
+            this.CutRightTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.CutRightTextBox.Location = new System.Drawing.Point(195, 7);
+            this.CutRightTextBox.Name = "CutRightTextBox";
+            this.CutRightTextBox.Size = new System.Drawing.Size(57, 22);
+            this.CutRightTextBox.TabIndex = 14;
             // 
-            // Color1
+            // CutBottomLabel
             // 
-            this.Color1.Location = new System.Drawing.Point(3, 34);
-            this.Color1.Name = "Color1";
-            this.Color1.Size = new System.Drawing.Size(75, 23);
-            this.Color1.TabIndex = 14;
-            this.Color1.Text = "Цвет 1";
-            this.Color1.UseVisualStyleBackColor = true;
-            this.Color1.Click += new System.EventHandler(this.SelectColor_Click);
+            this.CutBottomLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CutBottomLabel.AutoSize = true;
+            this.CutBottomLabel.Location = new System.Drawing.Point(131, 36);
+            this.CutBottomLabel.Name = "CutBottomLabel";
+            this.CutBottomLabel.Size = new System.Drawing.Size(58, 36);
+            this.CutBottomLabel.TabIndex = 3;
+            this.CutBottomLabel.Text = "Снизу";
+            this.CutBottomLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Color4
+            // CutTopLabel
             // 
-            this.Color4.Location = new System.Drawing.Point(3, 127);
-            this.Color4.Name = "Color4";
-            this.Color4.Size = new System.Drawing.Size(75, 23);
-            this.Color4.TabIndex = 17;
-            this.Color4.Text = "Цвет 4";
-            this.Color4.UseVisualStyleBackColor = true;
-            this.Color4.Click += new System.EventHandler(this.SelectColor_Click);
+            this.CutTopLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CutTopLabel.AutoSize = true;
+            this.CutTopLabel.Location = new System.Drawing.Point(3, 36);
+            this.CutTopLabel.Name = "CutTopLabel";
+            this.CutTopLabel.Size = new System.Drawing.Size(58, 36);
+            this.CutTopLabel.TabIndex = 2;
+            this.CutTopLabel.Text = "Сверху";
+            this.CutTopLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Color8
+            // CutLeftTextBox
             // 
-            this.Color8.Location = new System.Drawing.Point(113, 3);
-            this.Color8.Name = "Color8";
-            this.Color8.Size = new System.Drawing.Size(75, 25);
-            this.Color8.TabIndex = 21;
-            this.Color8.Text = "Цвет 8";
-            this.Color8.UseVisualStyleBackColor = true;
-            this.Color8.Click += new System.EventHandler(this.SelectColor_Click);
+            this.CutLeftTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.CutLeftTextBox.Location = new System.Drawing.Point(68, 7);
+            this.CutLeftTextBox.Name = "CutLeftTextBox";
+            this.CutLeftTextBox.Size = new System.Drawing.Size(56, 22);
+            this.CutLeftTextBox.TabIndex = 13;
             // 
-            // Color9
+            // groupBox2
             // 
-            this.Color9.Location = new System.Drawing.Point(113, 34);
-            this.Color9.Name = "Color9";
-            this.Color9.Size = new System.Drawing.Size(75, 25);
-            this.Color9.TabIndex = 22;
-            this.Color9.Text = "Цвет 9";
-            this.Color9.UseVisualStyleBackColor = true;
-            this.Color9.Click += new System.EventHandler(this.SelectColor_Click);
+            this.groupBox2.Controls.Add(this.tableLayoutPanel3);
+            this.groupBox2.Location = new System.Drawing.Point(1049, 179);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(281, 141);
+            this.groupBox2.TabIndex = 22;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Расширить на";
             // 
-            // Color10
+            // tableLayoutPanel3
             // 
-            this.Color10.Location = new System.Drawing.Point(113, 65);
-            this.Color10.Name = "Color10";
-            this.Color10.Size = new System.Drawing.Size(75, 25);
-            this.Color10.TabIndex = 23;
-            this.Color10.Text = "Цвет 10";
-            this.Color10.UseVisualStyleBackColor = true;
-            this.Color10.Click += new System.EventHandler(this.SelectColor_Click);
+            this.tableLayoutPanel3.ColumnCount = 4;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel3.Controls.Add(this.ExpandRightTextBox, 3, 0);
+            this.tableLayoutPanel3.Controls.Add(this.ExpandBottomTextBox, 3, 1);
+            this.tableLayoutPanel3.Controls.Add(this.ExpandLeftTextBox, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.ExpandTopTextBox, 1, 1);
+            this.tableLayoutPanel3.Controls.Add(this.ExpandLeftLabel, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.ExpandRightLabel, 2, 0);
+            this.tableLayoutPanel3.Controls.Add(this.ExpandBottomLabel, 2, 1);
+            this.tableLayoutPanel3.Controls.Add(this.ExpandTopLabel, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.ExpandButton, 2, 2);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(11, 19);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 3;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(256, 105);
+            this.tableLayoutPanel3.TabIndex = 17;
             // 
-            // Color11
+            // ExpandBottomTextBox
             // 
-            this.Color11.Location = new System.Drawing.Point(113, 96);
-            this.Color11.Name = "Color11";
-            this.Color11.Size = new System.Drawing.Size(75, 25);
-            this.Color11.TabIndex = 24;
-            this.Color11.Text = "Цвет 11";
-            this.Color11.UseVisualStyleBackColor = true;
-            this.Color11.Click += new System.EventHandler(this.SelectColor_Click);
+            this.ExpandBottomTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.ExpandBottomTextBox.Location = new System.Drawing.Point(195, 41);
+            this.ExpandBottomTextBox.Name = "ExpandBottomTextBox";
+            this.ExpandBottomTextBox.Size = new System.Drawing.Size(58, 22);
+            this.ExpandBottomTextBox.TabIndex = 16;
             // 
-            // Color12
+            // ExpandTopTextBox
             // 
-            this.Color12.Location = new System.Drawing.Point(113, 127);
-            this.Color12.Name = "Color12";
-            this.Color12.Size = new System.Drawing.Size(75, 25);
-            this.Color12.TabIndex = 25;
-            this.Color12.Text = "Цвет 12";
-            this.Color12.UseVisualStyleBackColor = true;
-            this.Color12.Click += new System.EventHandler(this.SelectColor_Click);
+            this.ExpandTopTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.ExpandTopTextBox.Location = new System.Drawing.Point(67, 41);
+            this.ExpandTopTextBox.Name = "ExpandTopTextBox";
+            this.ExpandTopTextBox.Size = new System.Drawing.Size(58, 22);
+            this.ExpandTopTextBox.TabIndex = 15;
             // 
-            // Color13
+            // ExpandLeftLabel
             // 
-            this.Color13.Location = new System.Drawing.Point(113, 158);
-            this.Color13.Name = "Color13";
-            this.Color13.Size = new System.Drawing.Size(75, 25);
-            this.Color13.TabIndex = 26;
-            this.Color13.Text = "Цвет 13";
-            this.Color13.UseVisualStyleBackColor = true;
-            this.Color13.Click += new System.EventHandler(this.SelectColor_Click);
+            this.ExpandLeftLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ExpandLeftLabel.AutoSize = true;
+            this.ExpandLeftLabel.Location = new System.Drawing.Point(3, 0);
+            this.ExpandLeftLabel.Name = "ExpandLeftLabel";
+            this.ExpandLeftLabel.Size = new System.Drawing.Size(58, 35);
+            this.ExpandLeftLabel.TabIndex = 0;
+            this.ExpandLeftLabel.Text = "Слева";
+            this.ExpandLeftLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Color14
+            // ExpandRightLabel
             // 
-            this.Color14.Location = new System.Drawing.Point(113, 189);
-            this.Color14.Name = "Color14";
-            this.Color14.Size = new System.Drawing.Size(75, 25);
-            this.Color14.TabIndex = 27;
-            this.Color14.Text = "Цвет 14";
-            this.Color14.UseVisualStyleBackColor = true;
-            this.Color14.Click += new System.EventHandler(this.SelectColor_Click);
+            this.ExpandRightLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ExpandRightLabel.AutoSize = true;
+            this.ExpandRightLabel.Location = new System.Drawing.Point(131, 0);
+            this.ExpandRightLabel.Name = "ExpandRightLabel";
+            this.ExpandRightLabel.Size = new System.Drawing.Size(58, 35);
+            this.ExpandRightLabel.TabIndex = 1;
+            this.ExpandRightLabel.Text = "Справа";
+            this.ExpandRightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // button2
+            // ExpandBottomLabel
             // 
-            this.button2.Location = new System.Drawing.Point(1125, 453);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(169, 23);
-            this.button2.TabIndex = 15;
-            this.button2.Text = "Отобразить";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.ExpandBottomLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ExpandBottomLabel.AutoSize = true;
+            this.ExpandBottomLabel.Location = new System.Drawing.Point(131, 35);
+            this.ExpandBottomLabel.Name = "ExpandBottomLabel";
+            this.ExpandBottomLabel.Size = new System.Drawing.Size(58, 35);
+            this.ExpandBottomLabel.TabIndex = 3;
+            this.ExpandBottomLabel.Text = "Снизу";
+            this.ExpandBottomLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // BorderWidth
+            // ExpandTopLabel
             // 
-            this.BorderWidth.Location = new System.Drawing.Point(880, 425);
-            this.BorderWidth.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.BorderWidth.Name = "BorderWidth";
-            this.BorderWidth.Size = new System.Drawing.Size(125, 22);
-            this.BorderWidth.TabIndex = 16;
-            this.BorderWidth.Text = "4";
+            this.ExpandTopLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ExpandTopLabel.AutoSize = true;
+            this.ExpandTopLabel.Location = new System.Drawing.Point(3, 35);
+            this.ExpandTopLabel.Name = "ExpandTopLabel";
+            this.ExpandTopLabel.Size = new System.Drawing.Size(58, 35);
+            this.ExpandTopLabel.TabIndex = 2;
+            this.ExpandTopLabel.Text = "Сверху";
+            this.ExpandTopLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // LeftPadding
+            // groupBox3
             // 
-            this.LeftPadding.Location = new System.Drawing.Point(1114, 127);
-            this.LeftPadding.Name = "LeftPadding";
-            this.LeftPadding.Size = new System.Drawing.Size(120, 22);
-            this.LeftPadding.TabIndex = 17;
+            this.groupBox3.Controls.Add(this.tableLayoutPanel4);
+            this.groupBox3.Location = new System.Drawing.Point(1049, 18);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(281, 155);
+            this.groupBox3.TabIndex = 23;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Установить";
             // 
-            // button3
+            // tableLayoutPanel4
             // 
-            this.button3.Location = new System.Drawing.Point(1237, 164);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 18;
-            this.button3.Text = "padding";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.tableLayoutPanel4.ColumnCount = 4;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel4.Controls.Add(this.PaddingButton, 2, 2);
+            this.tableLayoutPanel4.Controls.Add(this.PaddingRightTextBox, 3, 0);
+            this.tableLayoutPanel4.Controls.Add(this.PaddingBottomTextBox, 3, 1);
+            this.tableLayoutPanel4.Controls.Add(this.PaddingLeftTextBox, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.PaddingTopTextBox, 1, 1);
+            this.tableLayoutPanel4.Controls.Add(this.PaddingLeftLabel, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.PaddingRightLabel, 2, 0);
+            this.tableLayoutPanel4.Controls.Add(this.PaddingBottomLabel, 2, 1);
+            this.tableLayoutPanel4.Controls.Add(this.PaddingTopLabel, 0, 1);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(11, 19);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 3;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(256, 110);
+            this.tableLayoutPanel4.TabIndex = 17;
             // 
-            // RightPadding
+            // PaddingButton
             // 
-            this.RightPadding.Location = new System.Drawing.Point(1241, 127);
-            this.RightPadding.Name = "RightPadding";
-            this.RightPadding.Size = new System.Drawing.Size(120, 22);
-            this.RightPadding.TabIndex = 19;
+            this.tableLayoutPanel4.SetColumnSpan(this.PaddingButton, 2);
+            this.PaddingButton.Location = new System.Drawing.Point(131, 75);
+            this.PaddingButton.Name = "PaddingButton";
+            this.PaddingButton.Size = new System.Drawing.Size(122, 32);
+            this.PaddingButton.TabIndex = 18;
+            this.PaddingButton.Text = "Применить";
+            this.PaddingButton.UseVisualStyleBackColor = true;
+            this.PaddingButton.Click += new System.EventHandler(this.PaddingButton_Click);
+            // 
+            // PaddingRightTextBox
+            // 
+            this.PaddingRightTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.PaddingRightTextBox.Location = new System.Drawing.Point(195, 7);
+            this.PaddingRightTextBox.Name = "PaddingRightTextBox";
+            this.PaddingRightTextBox.Size = new System.Drawing.Size(58, 22);
+            this.PaddingRightTextBox.TabIndex = 19;
+            // 
+            // PaddingBottomTextBox
+            // 
+            this.PaddingBottomTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.PaddingBottomTextBox.Location = new System.Drawing.Point(195, 43);
+            this.PaddingBottomTextBox.Name = "PaddingBottomTextBox";
+            this.PaddingBottomTextBox.Size = new System.Drawing.Size(58, 22);
+            this.PaddingBottomTextBox.TabIndex = 16;
+            // 
+            // PaddingLeftTextBox
+            // 
+            this.PaddingLeftTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.PaddingLeftTextBox.Location = new System.Drawing.Point(67, 7);
+            this.PaddingLeftTextBox.Name = "PaddingLeftTextBox";
+            this.PaddingLeftTextBox.Size = new System.Drawing.Size(58, 22);
+            this.PaddingLeftTextBox.TabIndex = 17;
+            // 
+            // PaddingTopTextBox
+            // 
+            this.PaddingTopTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.PaddingTopTextBox.Location = new System.Drawing.Point(67, 43);
+            this.PaddingTopTextBox.Name = "PaddingTopTextBox";
+            this.PaddingTopTextBox.Size = new System.Drawing.Size(58, 22);
+            this.PaddingTopTextBox.TabIndex = 15;
+            // 
+            // PaddingLeftLabel
+            // 
+            this.PaddingLeftLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PaddingLeftLabel.AutoSize = true;
+            this.PaddingLeftLabel.Location = new System.Drawing.Point(3, 0);
+            this.PaddingLeftLabel.Name = "PaddingLeftLabel";
+            this.PaddingLeftLabel.Size = new System.Drawing.Size(58, 36);
+            this.PaddingLeftLabel.TabIndex = 0;
+            this.PaddingLeftLabel.Text = "Слева";
+            this.PaddingLeftLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // PaddingRightLabel
+            // 
+            this.PaddingRightLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PaddingRightLabel.AutoSize = true;
+            this.PaddingRightLabel.Location = new System.Drawing.Point(131, 0);
+            this.PaddingRightLabel.Name = "PaddingRightLabel";
+            this.PaddingRightLabel.Size = new System.Drawing.Size(58, 36);
+            this.PaddingRightLabel.TabIndex = 1;
+            this.PaddingRightLabel.Text = "Справа";
+            this.PaddingRightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // PaddingBottomLabel
+            // 
+            this.PaddingBottomLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PaddingBottomLabel.AutoSize = true;
+            this.PaddingBottomLabel.Location = new System.Drawing.Point(131, 36);
+            this.PaddingBottomLabel.Name = "PaddingBottomLabel";
+            this.PaddingBottomLabel.Size = new System.Drawing.Size(58, 36);
+            this.PaddingBottomLabel.TabIndex = 3;
+            this.PaddingBottomLabel.Text = "Снизу";
+            this.PaddingBottomLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // PaddingTopLabel
+            // 
+            this.PaddingTopLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PaddingTopLabel.AutoSize = true;
+            this.PaddingTopLabel.Location = new System.Drawing.Point(3, 36);
+            this.PaddingTopLabel.Name = "PaddingTopLabel";
+            this.PaddingTopLabel.Size = new System.Drawing.Size(58, 36);
+            this.PaddingTopLabel.TabIndex = 2;
+            this.PaddingTopLabel.Text = "Сверху";
+            this.PaddingTopLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // SelectBackgroundLabel
+            // 
+            this.SelectBackgroundLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SelectBackgroundLabel.AutoSize = true;
+            this.SelectBackgroundLabel.Location = new System.Drawing.Point(3, 35);
+            this.SelectBackgroundLabel.Name = "SelectBackgroundLabel";
+            this.SelectBackgroundLabel.Size = new System.Drawing.Size(65, 36);
+            this.SelectBackgroundLabel.TabIndex = 24;
+            this.SelectBackgroundLabel.Text = "Фон";
+            this.SelectBackgroundLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // SelectPalitteLabel
+            // 
+            this.SelectPalitteLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SelectPalitteLabel.AutoSize = true;
+            this.SelectPalitteLabel.Location = new System.Drawing.Point(3, 0);
+            this.SelectPalitteLabel.Name = "SelectPalitteLabel";
+            this.SelectPalitteLabel.Size = new System.Drawing.Size(65, 35);
+            this.SelectPalitteLabel.TabIndex = 25;
+            this.SelectPalitteLabel.Text = "Палитра";
+            this.SelectPalitteLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // SelectPalitteComboBox
+            // 
+            this.SelectPalitteComboBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.SelectPalitteComboBox.FormattingEnabled = true;
+            this.SelectPalitteComboBox.Location = new System.Drawing.Point(75, 5);
+            this.SelectPalitteComboBox.Name = "SelectPalitteComboBox";
+            this.SelectPalitteComboBox.Size = new System.Drawing.Size(121, 24);
+            this.SelectPalitteComboBox.TabIndex = 26;
+            this.SelectPalitteComboBox.SelectedIndexChanged += new System.EventHandler(this.SelectPalitteComboBox_SelectedIndexChanged);
+            // 
+            // SelectBackgroundComboBox
+            // 
+            this.SelectBackgroundComboBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.SelectBackgroundComboBox.FormattingEnabled = true;
+            this.SelectBackgroundComboBox.Items.AddRange(new object[] {
+            "Черный",
+            "Белый"});
+            this.SelectBackgroundComboBox.Location = new System.Drawing.Point(75, 40);
+            this.SelectBackgroundComboBox.Name = "SelectBackgroundComboBox";
+            this.SelectBackgroundComboBox.Size = new System.Drawing.Size(121, 24);
+            this.SelectBackgroundComboBox.TabIndex = 27;
+            this.SelectBackgroundComboBox.SelectedIndexChanged += new System.EventHandler(this.SelectBackgroundComboBox_SelectedIndexChanged);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.label3);
+            this.groupBox4.Controls.Add(this.SymCodeMaskedTextBox);
+            this.groupBox4.Controls.Add(this.label1);
+            this.groupBox4.Controls.Add(this.txtWidth);
+            this.groupBox4.Controls.Add(this.label2);
+            this.groupBox4.Controls.Add(this.txtHeight);
+            this.groupBox4.Controls.Add(this.smallIcon);
+            this.groupBox4.Location = new System.Drawing.Point(12, 75);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(147, 317);
+            this.groupBox4.TabIndex = 28;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Информация";
+            // 
+            // NextButton
+            // 
+            this.NextButton.Location = new System.Drawing.Point(165, 18);
+            this.NextButton.Name = "NextButton";
+            this.NextButton.Size = new System.Drawing.Size(147, 33);
+            this.NextButton.TabIndex = 29;
+            this.NextButton.Text = "Следующий";
+            this.NextButton.UseVisualStyleBackColor = true;
+            this.NextButton.Click += new System.EventHandler(this.NextButton_Click);
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 2;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.Controls.Add(this.SelectBackgroundLabel, 0, 1);
+            this.tableLayoutPanel5.Controls.Add(this.SelectPalitteComboBox, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.SelectBackgroundComboBox, 1, 1);
+            this.tableLayoutPanel5.Controls.Add(this.SelectPalitteLabel, 0, 0);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(328, 18);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 2;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(200, 71);
+            this.tableLayoutPanel5.TabIndex = 30;
+            // 
+            // PrevButton
+            // 
+            this.PrevButton.Location = new System.Drawing.Point(12, 18);
+            this.PrevButton.Name = "PrevButton";
+            this.PrevButton.Size = new System.Drawing.Size(147, 33);
+            this.PrevButton.TabIndex = 31;
+            this.PrevButton.Text = "Предыдущий";
+            this.PrevButton.UseVisualStyleBackColor = true;
+            this.PrevButton.Click += new System.EventHandler(this.PrevButton_Click);
+            // 
+            // DrawText
+            // 
+            this.DrawText.Location = new System.Drawing.Point(380, 438);
+            this.DrawText.Name = "DrawText";
+            this.DrawText.Size = new System.Drawing.Size(171, 37);
+            this.DrawText.TabIndex = 32;
+            this.DrawText.Text = "Отобразить данные";
+            this.DrawText.UseVisualStyleBackColor = true;
+            this.DrawText.Click += new System.EventHandler(this.DrawText_Click);
+            // 
+            // CurrentColorTextBox
+            // 
+            this.CurrentColorTextBox.Location = new System.Drawing.Point(673, 26);
+            this.CurrentColorTextBox.Maximum = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+            this.CurrentColorTextBox.Name = "CurrentColorTextBox";
+            this.CurrentColorTextBox.Size = new System.Drawing.Size(120, 22);
+            this.CurrentColorTextBox.TabIndex = 33;
+            this.CurrentColorTextBox.ValueChanged += new System.EventHandler(this.CurrentColorTextBox_ValueChanged);
+            // 
+            // CurrentColorLabel
+            // 
+            this.CurrentColorLabel.AutoSize = true;
+            this.CurrentColorLabel.Location = new System.Drawing.Point(567, 26);
+            this.CurrentColorLabel.Name = "CurrentColorLabel";
+            this.CurrentColorLabel.Size = new System.Drawing.Size(100, 17);
+            this.CurrentColorLabel.TabIndex = 34;
+            this.CurrentColorLabel.Text = "Текущий цвет";
+            // 
+            // CurrentColorPictureBox
+            // 
+            this.CurrentColorPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CurrentColorPictureBox.Location = new System.Drawing.Point(799, 24);
+            this.CurrentColorPictureBox.Name = "CurrentColorPictureBox";
+            this.CurrentColorPictureBox.Size = new System.Drawing.Size(24, 24);
+            this.CurrentColorPictureBox.TabIndex = 35;
+            this.CurrentColorPictureBox.TabStop = false;
+            // 
+            // ScaleLabel
+            // 
+            this.ScaleLabel.AutoSize = true;
+            this.ScaleLabel.Location = new System.Drawing.Point(570, 58);
+            this.ScaleLabel.Name = "ScaleLabel";
+            this.ScaleLabel.Size = new System.Drawing.Size(88, 17);
+            this.ScaleLabel.TabIndex = 36;
+            this.ScaleLabel.Text = "Увеличение";
+            // 
+            // ScaleTextBox
+            // 
+            this.ScaleTextBox.Increment = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.ScaleTextBox.Location = new System.Drawing.Point(673, 59);
+            this.ScaleTextBox.Maximum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.ScaleTextBox.Minimum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.ScaleTextBox.Name = "ScaleTextBox";
+            this.ScaleTextBox.Size = new System.Drawing.Size(120, 22);
+            this.ScaleTextBox.TabIndex = 37;
+            this.ScaleTextBox.Value = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.ScaleTextBox.ValueChanged += new System.EventHandler(this.ScaleTextBox_ValueChanged);
             // 
             // AddSymForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1324, 600);
-            this.Controls.Add(this.RightPadding);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.LeftPadding);
-            this.Controls.Add(this.BorderWidth);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.RightCutSize);
-            this.Controls.Add(this.LeftSizeTextBox);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtHeight);
-            this.Controls.Add(this.txtWidth);
+            this.ClientSize = new System.Drawing.Size(1342, 600);
+            this.Controls.Add(this.ScaleTextBox);
+            this.Controls.Add(this.ScaleLabel);
+            this.Controls.Add(this.CurrentColorPictureBox);
+            this.Controls.Add(this.CurrentColorLabel);
+            this.Controls.Add(this.CurrentColorTextBox);
+            this.Controls.Add(this.DrawText);
+            this.Controls.Add(this.PrevButton);
+            this.Controls.Add(this.tableLayoutPanel5);
+            this.Controls.Add(this.NextButton);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.bigIcon);
             this.Controls.Add(this.richTextBox1);
-            this.Controls.Add(this.AddButton);
-            this.Controls.Add(this.maskedTextBox1);
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "AddSymForm";
-            this.Text = "AddSymForm";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.LeftPadding)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.RightPadding)).EndInit();
+            this.Text = "Редактирование символа";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddSymForm_KeyDown);
+            ((System.ComponentModel.ISupportInitialize)(this.smallIcon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bigIcon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ExpandLeftTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ExpandRightTextBox)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CutBottomTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CutTopTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CutRightTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CutLeftTextBox)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ExpandBottomTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ExpandTopTextBox)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PaddingRightTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PaddingBottomTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PaddingLeftTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PaddingTopTextBox)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentColorTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CurrentColorPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScaleTextBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -475,42 +835,61 @@
 
         #endregion
 
-        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
-        private System.Windows.Forms.Button AddButton;
+        private System.Windows.Forms.MaskedTextBox SymCodeMaskedTextBox;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.TextBox txtWidth;
         private System.Windows.Forms.TextBox txtHeight;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox LeftSizeTextBox;
-        private System.Windows.Forms.TextBox RightCutSize;
-        private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.Button Color0;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Button Color7;
-        private System.Windows.Forms.Button Color6;
-        private System.Windows.Forms.Button Color5;
-        private System.Windows.Forms.Button Color3;
-        private System.Windows.Forms.Button Color2;
-        private System.Windows.Forms.Button Color1;
-        private System.Windows.Forms.Button Color4;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button Color15;
-        private System.Windows.Forms.Button Color8;
-        private System.Windows.Forms.Button Color9;
-        private System.Windows.Forms.Button Color10;
-        private System.Windows.Forms.Button Color11;
-        private System.Windows.Forms.Button Color12;
-        private System.Windows.Forms.Button Color13;
-        private System.Windows.Forms.Button Color14;
-        private System.Windows.Forms.TextBox BorderWidth;
-        private System.Windows.Forms.NumericUpDown LeftPadding;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.NumericUpDown RightPadding;
+        private System.Windows.Forms.PictureBox smallIcon;
+        private System.Windows.Forms.PictureBox bigIcon;
+        private System.Windows.Forms.Button CutButton;
+        private System.Windows.Forms.NumericUpDown ExpandLeftTextBox;
+        private System.Windows.Forms.Button ExpandButton;
+        private System.Windows.Forms.NumericUpDown ExpandRightTextBox;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.NumericUpDown CutRightTextBox;
+        private System.Windows.Forms.NumericUpDown CutLeftTextBox;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.NumericUpDown CutBottomTextBox;
+        private System.Windows.Forms.NumericUpDown CutTopTextBox;
+        private System.Windows.Forms.Label CutLeftLabel;
+        private System.Windows.Forms.Label CutRightLabel;
+        private System.Windows.Forms.Label CutBottomLabel;
+        private System.Windows.Forms.Label CutTopLabel;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.NumericUpDown ExpandBottomTextBox;
+        private System.Windows.Forms.NumericUpDown ExpandTopTextBox;
+        private System.Windows.Forms.Label ExpandLeftLabel;
+        private System.Windows.Forms.Label ExpandRightLabel;
+        private System.Windows.Forms.Label ExpandBottomLabel;
+        private System.Windows.Forms.Label ExpandTopLabel;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button PaddingButton;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.NumericUpDown PaddingRightTextBox;
+        private System.Windows.Forms.NumericUpDown PaddingBottomTextBox;
+        private System.Windows.Forms.NumericUpDown PaddingLeftTextBox;
+        private System.Windows.Forms.NumericUpDown PaddingTopTextBox;
+        private System.Windows.Forms.Label PaddingLeftLabel;
+        private System.Windows.Forms.Label PaddingRightLabel;
+        private System.Windows.Forms.Label PaddingBottomLabel;
+        private System.Windows.Forms.Label PaddingTopLabel;
+        private System.Windows.Forms.Label SelectBackgroundLabel;
+        private System.Windows.Forms.Label SelectPalitteLabel;
+        private System.Windows.Forms.ComboBox SelectPalitteComboBox;
+        private System.Windows.Forms.ComboBox SelectBackgroundComboBox;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button NextButton;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.Button PrevButton;
+        private System.Windows.Forms.Button DrawText;
+        private System.Windows.Forms.NumericUpDown CurrentColorTextBox;
+        private System.Windows.Forms.Label CurrentColorLabel;
+        private System.Windows.Forms.PictureBox CurrentColorPictureBox;
+        private System.Windows.Forms.Label ScaleLabel;
+        private System.Windows.Forms.NumericUpDown ScaleTextBox;
     }
 }

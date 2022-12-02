@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using log4net;
+using log4net.Config;
 
-namespace DLFontViewer
+namespace FFU_Editor
 {
     internal static class Program
     {
@@ -14,6 +16,7 @@ namespace DLFontViewer
         [STAThread]
         static void Main()
         {
+            XmlConfigurator.Configure();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

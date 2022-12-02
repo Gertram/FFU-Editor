@@ -5,16 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-namespace DLFontViewer
+namespace FFU_Editor
 {
     internal static class BitmapHelper
     {
         internal static Color TransparentBlack = Color.FromArgb(0, 0, 0, 0);
         internal static int FindLeftBorder(Bitmap bitmap)
         {
-            for (int x = 0; x < bitmap.Width; x++)
+            for (var x = 0; x < bitmap.Width; x++)
             {
-                for (int y = 0; y < bitmap.Height; y++)
+                for (var y = 0; y < bitmap.Height; y++)
                 {
                     var pixel = bitmap.GetPixel(x, y);
                     if (!pixel.Equals(TransparentBlack))
@@ -27,9 +27,9 @@ namespace DLFontViewer
         }
         internal static int FindRightBorder(Bitmap bitmap)
         {
-            for (int x = bitmap.Width - 1; x >= 0; x--)
+            for (var x = bitmap.Width - 1; x >= 0; x--)
             {
-                for (int y = 0; y < bitmap.Height; y++)
+                for (var y = 0; y < bitmap.Height; y++)
                 {
                     var pixel = bitmap.GetPixel(x, y);
                     if (!pixel.Equals(TransparentBlack))

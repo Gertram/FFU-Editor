@@ -4,11 +4,16 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net48</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <StartupObject></StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="D:\Downloads\pngcs_1_1_4_src\src\Hjg.Pngcs\Hjg.Pngcs.csproj" />
-    <ProjectReference Include="D:\Work\source\PixelPet\LibPixelPet\LibPixelPet.csproj" />
+    <PackageReference Include="log4net" Version="2.0.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Downloads\pngcs_1_1_4_src\src\Hjg.Pngcs\Hjg.Pngcs.csproj" />
+    <ProjectReference Include="..\..\..\FFULibrary\FFULibrary\FFULibrary.csproj" />
   </ItemGroup>
   
   <ItemGroup>

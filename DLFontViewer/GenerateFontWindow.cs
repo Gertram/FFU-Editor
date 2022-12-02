@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DLFontViewer
+namespace FFU_Editor
 {
     public partial class GenerateFontWindow : Form
     {
@@ -93,8 +93,6 @@ namespace DLFontViewer
             value = 0;
             return false;
         }
-        private static string RusUpper = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
-        private static string RusDown = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
         private static string Rus = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
         internal Dictionary<char, Bitmap> Syms { get; private set; } = new Dictionary<char, Bitmap>();
         internal Dictionary<Color,byte> Colors { get; set; } = new Dictionary<Color,byte>();
