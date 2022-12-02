@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
-using Hjg.Pngcs;
+using FFULibrary;
+using log4net;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace DLFontViewer
+namespace FFU_Editor
 {
     /*00000000000000000000
 00000000000000000000
@@ -37,28 +38,54 @@ namespace DLFontViewer
 00000000000000000000*/
     public partial class AddSymForm : Form
     {
-        public AddSymForm(DLFont font)
+        private static readonly ILog log = LogManager.GetLogger(typeof(MainForm));
+        private Cursor IconCursor;
+        private readonly Cursor WhitePen = new Cursor(Properties.Resources.pen_white.GetHicon());
+        private readonly Cursor BlackPen = new Cursor(Properties.Resources.pen_black.GetHicon());
+        private Color CellColor1 { get; set; }
+        private Color CellColor2 { get; set; }
+        private Color CurrentColor { get; set; }
+        private int CurrentColorIndex { get; set; }
+        public AddSymForm(FFU font)
         {
             InitializeComponent();
-            this.font = font;
-            
+
+            FFU = font;
+
+            SelectPalitteComboBox.Items.Clear();
+            if (FFU.Pallettes != null) {
+                foreach (var index in FFU.Pallettes.Select((x, index) => index))
+                {
+                    SelectPalitteComboBox.Items.Add(index);
+                }
+            }
+            else
+            {
+                SelectPalitteComboBox.Visible = false;
+                SelectPalitteLabel.Visible = false;
+                SelectPalitteComboBox.Items.Add(0);
+            }
+            SelectPalitteComboBox.SelectedIndex = 0;
+            SelectBackgroundComboBox.SelectedIndex = 0;
+            CurrentColorTextBox.Maximum = FFU.GetPalette(0).Length - 1;
+            CurrentColor = FFU.GetPalette(0)[0];
+            CurrentColorIndex = 0;
         }
-        DLFont font;
-        private int code;
-        private ISym sym;
-        public int Code
+        private FFU FFU { get; set; }
+        private int currentCode = -1;
+        private Sym CurrentSym { get; set; }
+        public int CurrentCode
         {
             get
             {
-                return code;
+                return currentCode;
             }
             set
             {
-                code = value;
-                maskedTextBox1.Text = string.Format("{0:X}", code);
+                ShowSym(value);
             }
         }
-        private char toChar(int sym)
+        private char ToChar(int sym)
         {
             if (sym < 10)
             {
@@ -66,286 +93,370 @@ namespace DLFontViewer
             }
             return (char)(sym + 0x37);
         }
-        private void ShowSym(IReadOnlyList<Color> pallite = null)
+        private void ShowSymAt(int index)
         {
-            pictureBox2.Width = SymWidth * scale_size;
-            pictureBox2.Height = SymHeight * scale_size;
-            pictureBox1.Height = SymHeight * scale_size_min;
-            pictureBox1.Width = SymWidth * scale_size_min;
-            this.buff = sym.GetBitmap(pictureBox2.Width, pictureBox2.Height, pallite);
-            pictureBox1.Image = sym.GetBitmap(pictureBox1.Width, pictureBox1.Height, pallite);
-            
-            pictureBox2.Image = this.buff;
+            index = (FFU.Symbols.Count + index) % FFU.Symbols.Count;
+            CurrentCode = FFU.Symbols.ElementAt(index).Key;
         }
-        public ISym Sym
+        private void ShowSym(int code = -1)
         {
-            get => sym;
-            set
+            if (code == -1)
             {
-                sym = value;
-                txtWidth.Text = string.Format("{0:X}", sym.Width);
-                txtHeight.Text = string.Format("{0:X}", sym.Height);
-                var text = new List<char>();
-                for (int y = 0; y < sym.Height; y++)
+                if (currentCode == -1)
                 {
-                    for (int x = 0; x < sym.Width; x++)
-                    {
-                        text.Add(toChar(sym.Image[x, y]));
-                    }
-                    text.Add('\n');
+                    return;
                 }
-
-                richTextBox1.Text = new string(text.ToArray());
-                var colors = sym.Colors;
-                Color0.BackColor = colors[0];
-                Color1.BackColor = colors[1];
-                Color2.BackColor = colors[2];
-                Color3.BackColor = colors[3];
-                Color4.BackColor = colors[4];
-                Color5.BackColor = colors[5];
-                Color6.BackColor = colors[6];
-                Color7.BackColor = colors[7];
-                if (colors.Count > 8)
-                {
-                    Color8.BackColor = colors[8];
-                    Color9.BackColor = colors[9];
-                    Color10.BackColor = colors[10];
-                    Color11.BackColor = colors[11];
-                    Color12.BackColor = colors[12];
-                    Color13.BackColor = colors[13];
-                    Color14.BackColor = colors[14];
-                    Color15.BackColor = colors[15];
-
-                }
-                var palitte = this.font.GetPalitte(0);  
-                ShowSym(palitte);
+                code = currentCode;
             }
-        }
-
-        private void AddButton_Click(object sender, EventArgs e)
-        {
-            /* try
-             {
-                 Code = int.Parse(maskedTextBox1.Text, System.Globalization.NumberStyles.HexNumber);
-                 var buff = richTextBox1.Text.Replace("\n", "").Select(x => (byte)(x < 'A' ? x - 0x30 : x - 'A' + 10)).ToArray();
-                 sym = Sym.FromArray(buff,0,buff.Length, SymWidth, SymHeight);
-
-                 DialogResult = DialogResult.OK;
-             }
-             catch (Exception ex)
-             {
-                 MessageBox.Show(ex.ToString(), "Ошибка!");
-             }*/
-        }
-        
-        
-        private byte SymWidth => (byte)int.Parse(txtWidth.Text, System.Globalization.NumberStyles.HexNumber);
-        private byte SymHeight => (byte)int.Parse(txtHeight.Text, System.Globalization.NumberStyles.HexNumber);
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
             try
             {
-                var width = SymWidth;
-                var height = SymHeight;
-                var buff = richTextBox1.Text.Trim().Replace("\n", "").PadRight(width * height, '0');
+                currentCode = code;
+                SymCodeMaskedTextBox.Text = code.ToString("X");
+                var palitte = FFU.GetPalette(SelectPalitteComboBox.SelectedIndex);
+                CurrentSym = FFU.Symbols[code];
+                var text = new char[(CurrentSym.Width + 1) * CurrentSym.Height];
+                var pos = 0;
+                for (var y = 0; y < CurrentSym.Height; y++)
+                {
+                    for (var x = 0; x < CurrentSym.Width; x++, pos++)
+                    {
+                        text[pos] = CurrentSym.Image[x, y].ToString("X")[0];
+                    }
+                    text[pos] = '\n';
+                    pos++;
+                }
+                richTextBox1.Text = new string(text).Trim();
+                var width = CurrentSym.Width;
+                var height = CurrentSym.Height;
+                txtWidth.Text = $"{width:X}";
+                txtHeight.Text = $"{height:X}";
+                SymWidth = width;
+                SymHeight = height;
+                bigIcon.Width = width * BigScale;
+                bigIcon.Height = height * BigScale;
+                smallIcon.Height = height * MinScale;
+                smallIcon.Width = height * MinScale;
+                var wrap = new SymWrap(CurrentSym);
+                var left = wrap.LeftPadding();
+                if (left != -1)
+                {
+                    PaddingLeftTextBox.Value = left;
+                    PaddingRightTextBox.Value = wrap.RightPadding();
+                    PaddingTopTextBox.Value = wrap.TopPadding();
+                    PaddingBottomTextBox.Value = wrap.BottomPadding();
+                    PaddingLeftTextBox.Enabled = PaddingBottomTextBox.Enabled = PaddingRightTextBox.Enabled = PaddingTopTextBox.Enabled = true;
+                }
+                else
+                {
+                    PaddingLeftTextBox.Value = PaddingRightTextBox.Value = PaddingTopTextBox.Value = PaddingBottomTextBox.Value = 0;
+                    PaddingLeftTextBox.Enabled = PaddingBottomTextBox.Enabled = PaddingRightTextBox.Enabled = PaddingTopTextBox.Enabled = false;
+                }
 
-                //var bitmap = new Bitmap(Convert.ToInt32(width), Convert.ToInt32(height));
-                //for (var y = 0; y < height; y++)
-                //{
-                //    for (var x = 0; x < width; x++)
-                //    {
-                //        var val = (buff[y * width + x] - 48) /** 255 / 7*/;
-                //        bitmap.SetPixel(x, y, Color.FromArgb(val, val, val));
-                //    }
-                //}
-                //pictureBox2.Width = SymWidth * scale_size;
-                //pictureBox2.Height = SymWidth * scale_size;
-                //pictureBox1.Height = SymHeight * scale_size_min;
-                //pictureBox1.Width = SymWidth * scale_size_min;
-                //this.buff = ResizeBitmap(bitmap, pictureBox2.Width, pictureBox2.Height);
-                //pictureBox1.Image = ResizeBitmap(bitmap, pictureBox1.Width, pictureBox1.Height); ;
-                //pictureBox2.Image = this.buff;
-
+                buff = CurrentSym.GetBitmap(palitte, BigScale);
+                smallIcon.Image = CurrentSym.GetBitmap(palitte, MinScale);
+                bigIcon.Image = buff;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Ошибка!");
+                ShowError("", ex);
             }
         }
+
+        private int SymWidth
+        {
+            get => (byte)int.Parse(txtWidth.Text, System.Globalization.NumberStyles.HexNumber);
+            set => txtWidth.Text = value.ToString("X");
+        }
+
+        private int SymHeight
+        {
+            get => (byte)int.Parse(txtHeight.Text, System.Globalization.NumberStyles.HexNumber);
+            set => txtHeight.Text = value.ToString("X");
+        }
+
         private Bitmap buff;
-        const int scale_size = 10;
-        const int scale_size_min = 2;
+        private int BigScale { get; set; } = 12;
+        private int MinScale { get; set; } = 2;
+        private Point GetMousePos(MouseEventArgs e)
+        {
+            return new Point(e.X / BigScale, e.Y / BigScale);
+        }
+        private Rectangle GetImageCellRect(MouseEventArgs e)
+        {
+            var pos = GetMousePos(e);
+            var startx = BigScale * pos.X;
+            var starty = BigScale * pos.Y;
+            return new Rectangle(startx, starty, BigScale, BigScale);
+        }
+        private void BigIcon_MouseEnter(object sender, EventArgs e)
+        {
+            Cursor = IconCursor;
+        }
         private void PictureBox_MouseMove(object sender, MouseEventArgs e)
         {
             try
             {
-                var pos = e.Location;
-                var image = pictureBox2.Image;
-                var bitmap = new Bitmap(buff);
-                var width = pictureBox2.Width;
-                var height = pictureBox2.Height;
-                var res_x = width / SymWidth;
-                var res_y = height / SymHeight;
-                var pos_x = pos.X / res_x;
-                var pos_y = pos.Y / res_y;
-                var startx = res_x * pos_x;
-                var endx = res_x * (pos_x + 1) - 1;
-                var starty = res_y * pos_y;
-                var endy = res_y * (pos_y + 1) - 1;
-                var strokeLength = 4;
+                var strokeLength = BigScale / 3;
 
+                var bitmap = buff.Clone() as Bitmap;
                 if (IsDraw)
                 {
-                    for (int y = starty; y <= endy; y++)
-                    {
-                        for (int x = startx; x <= endx; x++)
-                        {
-                            buff.SetPixel(x, y, Color.White);
-                        }
-                    }
-                    pictureBox2.Image = buff;
-                    var text = richTextBox1.Text.Trim().Split('\n').Select(x => x.ToArray()).ToList();
-                    text[pos_y][pos_x] = '7';
-                    richTextBox1.Text = string.Join("\n", text.Select(x => new string(x)));
+                    var pos = GetMousePos(e);
+                    CurrentSym.Image[pos.X, pos.Y] = (byte)CurrentColorIndex;
+                    ShowSym();
                 }
                 else
                 {
-                    for (int x = startx; x <= endx; x += strokeLength * 2)
+                    var rect = GetImageCellRect(e);
+                    for (int x = rect.Left; x < rect.Right; x += strokeLength * 2)
                     {
-                        for (int tx = x; tx < x + strokeLength; tx++)
+                        for (int tx = x; tx < x + strokeLength && tx < rect.Right; tx++)
                         {
-                            bitmap.SetPixel(tx, starty, Color.White);
-                            bitmap.SetPixel(tx, endy, Color.White);
+                            bitmap.SetPixel(tx, rect.Top, CellColor1);
+                            bitmap.SetPixel(tx, rect.Bottom - 1, CellColor1);
+                        }
+                        for (int tx = x + strokeLength; tx < x + 2 * strokeLength && tx < rect.Right; tx++)
+                        {
+                            bitmap.SetPixel(tx, rect.Top, CellColor2);
+                            bitmap.SetPixel(tx, rect.Bottom - 1, CellColor2);
                         }
                     }
-                    for (int x = startx + strokeLength; x <= endx; x += strokeLength * 2)
+                    for (int y = rect.Top; y < rect.Bottom; y += strokeLength * 2)
                     {
-                        for (int tx = x; tx < x + strokeLength; tx++)
+                        for (int ty = y; ty < y + strokeLength && ty < rect.Bottom; ty++)
                         {
-                            bitmap.SetPixel(tx, starty, Color.Black);
-                            bitmap.SetPixel(tx, endy, Color.Black);
+                            bitmap.SetPixel(rect.Left, ty, CellColor1);
+                            bitmap.SetPixel(rect.Right - 1, ty, CellColor1);
+                        }
+                        for (int ty = y + strokeLength; ty < y + 2 * strokeLength && ty < rect.Bottom; ty++)
+                        {
+                            bitmap.SetPixel(rect.Left, ty, CellColor2);
+                            bitmap.SetPixel(rect.Right - 1, ty, CellColor2);
                         }
                     }
-                    for (int y = starty; y <= endy; y += strokeLength * 2)
-                    {
-                        for (int ty = y; ty < y + strokeLength; ty++)
-                        {
-                            bitmap.SetPixel(startx, ty, Color.White);
-                            bitmap.SetPixel(endx, ty, Color.White);
-                        }
-                    }
-                    for (int y = starty + strokeLength; y <= endy; y += strokeLength * 2)
-                    {
-                        for (int ty = y; ty < y + strokeLength; ty++)
-                        {
-                            bitmap.SetPixel(startx, y, Color.Black);
-                            bitmap.SetPixel(endx, y, Color.Black);
-                        }
-                    }
-                    pictureBox2.Image = bitmap;
+                    bigIcon.Image = bitmap;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("HUI");
+                ShowError("", ex);
             }
         }
-        private bool IsDraw { get; set; }= false;
-        private void pictureBox2_MouseDown(object sender, MouseEventArgs e)
+        private bool IsDraw { get; set; } = false;
+        private void BigIcon_MouseDown(object sender, MouseEventArgs e)
         {
-            IsDraw = true;
-            PictureBox_MouseMove(sender, e);
+            if (e.Button == MouseButtons.Left)
+            {
+                IsDraw = true;
+                PictureBox_MouseMove(sender, e);
+            }else if (e.Button == MouseButtons.Right)
+            {
+                var pos = GetMousePos(e);
+                CurrentColorTextBox.Value = CurrentSym.Image[pos.X, pos.Y];
+            }
         }
 
-        private void pictureBox2_MouseLeave(object sender, EventArgs e)
+        private void BigIcon_MouseLeave(object sender, EventArgs e)
         {
             IsDraw = false;
+            Cursor = Cursors.Default;
         }
 
-        private void pictureBox2_MouseUp(object sender, MouseEventArgs e)
+        private void BigIcon_MouseUp(object sender, MouseEventArgs e)
         {
-            IsDraw = false;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            var leftsize = int.Parse(LeftSizeTextBox.Text);
-            var rightsize = int.Parse(RightCutSize.Text);
-            var width = sym.Width - leftsize - rightsize;
-
-            var temp = new byte[width, sym.Height];
-            for (int y = 0; y < sym.Height; y++)
+            if (e.Button == MouseButtons.Left)
             {
-                for (int x = 0; x < width; x++)
+                IsDraw = false;
+            }
+        }
+
+        private void CutButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                new SymWrap(CurrentSym).RemovePadding((int)CutLeftTextBox.Value, (int)CutTopTextBox.Value,
+                        (int)CutRightTextBox.Value, (int)CutBottomTextBox.Value);
+                ShowSym();
+            }
+            catch (Exception ex)
+            {
+                ShowError("", ex);
+            }
+        }
+
+        private void ExpandButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                new SymWrap(CurrentSym).AddPadding((int)ExpandLeftTextBox.Value, (int)ExpandTopTextBox.Value,
+                    (int)ExpandRightTextBox.Value, (int)ExpandBottomTextBox.Value);
+                ShowSym();
+            }
+            catch (Exception ex)
+            {
+                ShowError("", ex);
+            }
+        }
+        private int SymPosition => FFU.Symbols.Keys.ToList().IndexOf(CurrentCode);
+        private void NextButton_Click(object sender, EventArgs e)
+        {
+            SymCodeMaskedTextBox.Focus();
+            ShowSymAt(SymPosition + 1);
+        }
+
+        private void PrevButton_Click(object sender, EventArgs e)
+        {
+            SymCodeMaskedTextBox.Focus();
+            ShowSymAt(SymPosition - 1);
+        }
+        private void SelectPalitteComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (FFU == null)
                 {
-                    temp[x, y] = sym.Image[x + leftsize, y];
+                    return;
+                }
+                var palitte = FFU.GetPalette(SelectPalitteComboBox.SelectedIndex);
+                if (palitte == null)
+                {
+                    return;
+                }
+                ShowSym();
+                CurrentColorTextBox_ValueChanged(this, null);
+            }
+            catch (Exception ex)
+            {
+                ShowError(nameof(SelectPalitteComboBox_SelectedIndexChanged), ex);
+            }
+        }
+
+        private void SelectBackgroundComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (SelectBackgroundComboBox.Text == "Черный")
+                {
+                    bigIcon.BackColor = Color.Black;
+                    smallIcon.BackColor = Color.Black;
+                    CellColor1 = Color.White;
+                    CellColor2 = Color.Black;
+                    IconCursor = WhitePen;
+                }
+                else if (SelectBackgroundComboBox.Text == "Белый")
+                {
+                    bigIcon.BackColor = Color.White;
+                    smallIcon.BackColor = Color.White;
+                    CellColor1 = Color.Black;
+                    CellColor2 = Color.White;
+                    IconCursor = BlackPen;
                 }
             }
-            sym.Image = temp;
-            sym.Width = (byte)width;
-            txtWidth.Text = $"{width:X}";
-            ShowSym();
-        }
-
-        private void SelectColor_Click(object sender, EventArgs e)
-        {
-            if (sender is Button button && colorDialog1.ShowDialog() == DialogResult.OK)
+            catch (Exception ex)
             {
-                button.BackColor = colorDialog1.Color;
+                ShowError(nameof(SelectBackgroundComboBox_SelectedIndexChanged), ex);
             }
         }
-
-        private void button2_Click(object sender, EventArgs e)
+        private void SymCodeMaskedTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            var pallite = new List<Color>
+            try
             {
-                Color0.BackColor,
-                Color1.BackColor,
-                Color2.BackColor,
-                Color3.BackColor,
-                Color4.BackColor,
-                Color5.BackColor,
-                Color6.BackColor,
-                Color7.BackColor
-            };
-            if (sym.Colors.Count > 8)
-            {
-                pallite.Add(Color8.BackColor);
-                pallite.Add(Color9.BackColor);
-                pallite.Add(Color10.BackColor);
-                pallite.Add(Color11.BackColor);
-                pallite.Add(Color12.BackColor);
-                pallite.Add(Color13.BackColor);
-                pallite.Add(Color14.BackColor);
-                pallite.Add(Color15.BackColor);
-            }
-            ShowSym(pallite);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            var left = (int)LeftPadding.Value;
-            var right = (int)RightPadding.Value;
-            var width = sym.Width + left+right;
-
-            var temp = new byte[width, sym.Height];
-            /*for (int y = 0; y < sym.Height; y++)
-            {
-                for (int x = 0; x < width; x++)
+                if (e.KeyCode == Keys.Enter)
                 {
-                    temp[x, y] = 4;
+                    CurrentCode = int.Parse(SymCodeMaskedTextBox.Text, System.Globalization.NumberStyles.HexNumber);
                 }
-            }*/
-            for (int y = 0; y < sym.Height; y++)
+            }catch(Exception ex)
             {
-                for (int x = 0; x < sym.Width; x++)
-                {
-                    temp[x+left, y] = sym.Image[x, y];
-                }
+                ShowError("", ex);
             }
-            sym.Image = temp;
-            sym.Width = (byte)width;
-            txtWidth.Text = $"{width:X}";
+        }
+        private void ShowError(string message, Exception ex)
+        {
+            MessageBox.Show(message + ex.ToString(), "Ошибка:");
+            log.Error(ex.ToString());
+        }
+
+        private void AddSymForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right && e.Control)
+            {
+                NextButton_Click(this, null);
+            }
+            else if (e.KeyCode == Keys.Left && e.Control)
+            {
+                PrevButton_Click(this, null);
+            }
+        }
+
+        private void PaddingButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                new SymWrap(CurrentSym).SetPadding((int)PaddingLeftTextBox.Value, (int)PaddingTopTextBox.Value,
+                        (int)PaddingRightTextBox.Value, (int)PaddingBottomTextBox.Value);
+                ShowSym();
+            }
+            catch (Exception ex)
+            {
+                ShowError("", ex);
+            }
+        }
+        ~AddSymForm()
+        {
+            WhitePen.Dispose();
+            BlackPen.Dispose();
+        }
+
+        private void DrawText_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var lines = richTextBox1.Text.Split('\n');
+                var height = lines.Length;
+                var width = lines.Max(x => x.Length);
+                var temp = new byte[width, height];
+                char[] text = new char[width * height + height];
+                int pos = 0;
+                for (var y = 0; y < height; y++)
+                {
+                    var line = lines[y];
+                    for (int x = 0; x < width; x++, pos++)
+                    {
+                        var value = 0;
+                        if (x < line.Length && int.TryParse(line[x].ToString(), System.Globalization.NumberStyles.HexNumber, null, out int result))
+                        {
+                            value = result;
+                        }
+                        text[pos] = value.ToString("X")[0];
+
+                        temp[x, y] = (byte)value;
+                    }
+                    if (y != height - 1)
+                    {
+                        text[pos] = '\n';
+                        pos++;
+                    }
+                }
+                CurrentSym.Image = temp;
+
+                ShowSym();
+            }
+            catch (Exception ex)
+            {
+                ShowError("", ex);
+            }
+        }
+
+        private void CurrentColorTextBox_ValueChanged(object sender, EventArgs e)
+        {
+            CurrentColorIndex = (int)CurrentColorTextBox.Value;
+            CurrentColor = FFU.GetPalette(SelectPalitteComboBox.SelectedIndex)[CurrentColorIndex];
+            CurrentColorPictureBox.BackColor = CurrentColor;
+        }
+
+        private void ScaleTextBox_ValueChanged(object sender, EventArgs e)
+        {
+            BigScale = (int)ScaleTextBox.Value;
             ShowSym();
         }
     }

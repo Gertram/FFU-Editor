@@ -1,6 +1,6 @@
-﻿namespace DLFontViewer
+﻿namespace FFU_Editor
 {
-    partial class CutSymsForm
+    partial class SetPaddingForm
     {
         /// <summary>
         /// Required designer variable.
@@ -36,7 +36,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(119, 18);
+            this.numericUpDown1.Location = new System.Drawing.Point(133, 18);
             this.numericUpDown1.Minimum = new decimal(new int[] {
             1,
             0,
@@ -53,11 +53,11 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(64, 62);
+            this.button1.Location = new System.Drawing.Point(133, 58);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(120, 23);
+            this.button1.Size = new System.Drawing.Size(120, 28);
             this.button1.TabIndex = 1;
-            this.button1.Text = "Обрезать";
+            this.button1.Text = "Установить";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -66,11 +66,11 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(101, 16);
+            this.label1.Size = new System.Drawing.Size(115, 17);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Ширина полей";
+            this.label1.Text = "Ширина отступа";
             // 
-            // CurSymsForm
+            // CutSymsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -78,8 +78,8 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.numericUpDown1);
-            this.Name = "CurSymsForm";
-            this.Text = "CurSymsForm";
+            this.Name = "CutSymsForm";
+            this.Text = "Установка отступов";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

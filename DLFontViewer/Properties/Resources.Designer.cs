@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DLFontViewer.Properties {
+namespace FFU_Editor.Properties {
     using System;
     
     
@@ -19,7 +19,7 @@ namespace DLFontViewer.Properties {
     // с помощью такого средства, как ResGen или Visual Studio.
     // Чтобы добавить или удалить член, измените файл .ResX и снова запустите ResGen
     // с параметром /str или перестройте свой проект VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -39,7 +39,7 @@ namespace DLFontViewer.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DLFontViewer.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FFU_Editor.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,80 @@ namespace DLFontViewer.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на abcdefghijklmnopqrstuvwxyz.
+        /// </summary>
+        internal static string EnglishLowerCase {
+            get {
+                return ResourceManager.GetString("EnglishLowerCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на ABCDEFGHIJKLMNOPQRSTUVWXYZ.
+        /// </summary>
+        internal static string EnglishUpperCase {
+            get {
+                return ResourceManager.GetString("EnglishUpperCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ.
+        /// </summary>
+        internal static string JapaneEnglishLowerCase {
+            get {
+                return ResourceManager.GetString("JapaneEnglishLowerCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ.
+        /// </summary>
+        internal static string JapaneEnglishUpperCase {
+            get {
+                return ResourceManager.GetString("JapaneEnglishUpperCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pen_black {
+            get {
+                object obj = ResourceManager.GetObject("pen_black", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pen_white {
+            get {
+                object obj = ResourceManager.GetObject("pen_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на абвгдеёжзийклмнопрстуфхцчшщъыьэюя.
+        /// </summary>
+        internal static string RussiaLowerCase {
+            get {
+                return ResourceManager.GetString("RussiaLowerCase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ.
+        /// </summary>
+        internal static string RussiaUpperSymbols {
+            get {
+                return ResourceManager.GetString("RussiaUpperSymbols", resourceCulture);
             }
         }
     }

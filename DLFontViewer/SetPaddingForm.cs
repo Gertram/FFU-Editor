@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DLFontViewer
+namespace FFU_Editor
 {
-    public partial class CutSymsForm : Form
+    public partial class SetPaddingForm : Form
     {
-        public CutSymsForm()
+        public SetPaddingForm()
         {
             InitializeComponent();
         }

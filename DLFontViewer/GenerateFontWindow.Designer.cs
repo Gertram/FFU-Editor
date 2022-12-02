@@ -1,4 +1,4 @@
-﻿namespace DLFontViewer
+﻿namespace FFU_Editor
 {
     partial class GenerateFontWindow
     {
