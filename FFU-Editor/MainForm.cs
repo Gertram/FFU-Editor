@@ -33,10 +33,35 @@ namespace FFU_Editor
             }
             OpenFile(lastFile);
         }
+        private bool AskSave()
+        {
+            if(FFUFont == null)
+            {
+                return true;
+            }
+            var res = MessageBox.Show("Есть несохраненный файл. Сохранить?", "Внимание", MessageBoxButtons.YesNoCancel);
+            if(res == DialogResult.Cancel)
+            {
+                return false;
+            }
+            if(res == DialogResult.No)
+            {
+                return true;
+            }
+            if(FileName != null)
+            {
+                return Save(FileName);
+            }
+            return SaveAs();
+        }
         private void OpenFile(string filename)
         {
             try
             {
+                if (!AskSave())
+                {
+                    return;
+                }
                 FFUFont = new FFU(filename);
                 FileName = filename;
                 Config.Set("LastFile", FileName);
@@ -49,6 +74,10 @@ namespace FFU_Editor
                 BackgroundComboBox.SelectedIndex = 0;
                 ShowTemplateImage();
                 ShowSym(FFUFont.Symbols.ElementAt(0).Key);
+                Text = FileName;
+                SaveToolStripMenuItem.Enabled = true;
+                SaveAsToolStripMenuItem.Enabled = true;
+                ExportToolStripMenuItem.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -59,14 +88,14 @@ namespace FFU_Editor
         {
             try
             {
-                if(template == null)
+                if (template == null)
                 {
                     template = MainConfig.Template;
                 }
                 var lines = template.Split('\n')
                     .Select(line => line.Select(x => ToInt(x)).Where(x => FFUFont.Symbols.ContainsKey(x)).Select(x => FFUFont.Symbols[x]).ToList());
                 var bitmap = new Bitmap(TemplateSymbolsBox.Width, TemplateSymbolsBox.Height);
-                if (!lines.Any(x=>x.Any()))
+                if (!lines.Any(x => x.Any()))
                 {
                     pbSymbols.Image = bitmap;
                     return;
@@ -192,36 +221,43 @@ namespace FFU_Editor
         {
             mtxtSymCode.BackColor = Color.White;
         }
-        private void Save(string filename)
+        private bool Save(string filename)
         {
             try
             {
                 if (FFUFont.CalcFileSize() > FFUFont.Header.FileSize
                     && MessageBox.Show("Итоговой размер файла превышает исходный!Хотите продолжить?", "Внимание", MessageBoxButtons.YesNo) != DialogResult.Yes)
                 {
-                    return;
+                    return false;
                 }
 
                 FFUFont.Save(filename);
                 FileName = filename;
+                Text = FileName;
+                return true;
             }
             catch (Exception ex)
             {
                 ShowError(nameof(Save), ex);
+                return false;
             }
         }
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFile();
         }
-        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        private bool SaveAs()
         {
             var sfd = new SaveFileDialog();
             if (sfd.ShowDialog() != DialogResult.OK)
             {
-                return;
+                return false;
             }
-            Save(sfd.FileName);
+            return Save(sfd.FileName);
+        }
+        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveAs();
         }
         private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -249,6 +285,7 @@ namespace FFU_Editor
             try
             {
                 var form = new AddSymForm(FFUFont);
+                form.CurrentSym = new Sym(new byte[FFUFont.Header.FontInfo.SymWidth, FFUFont.Header.FontInfo.SymHeight]);
                 if (form.ShowDialog() != DialogResult.OK)
                 {
                     return;
@@ -322,10 +359,10 @@ namespace FFU_Editor
                 var temp = new SymWrap(tempFont.Symbols[sym.Key]);
                 var leftBorder = temp.FindLeftPosition() * ratio;
                 var rightBorder = (temp.Sym.Width - temp.FindRightPosition() - 1) * ratio;
-                temp.SetHorizontalPadding(leftBorder,rightBorder);
+                temp.SetHorizontalPadding(leftBorder, rightBorder);
             }
         }
-        private void SetBorder(int start, int end, int border = 1)
+        private void SetPadding(int start, int end, int border = 1)
         {
             foreach (var sym in FFUFont.Symbols.Where(x => x.Key >= start && x.Key <= end))
             {
@@ -340,24 +377,7 @@ namespace FFU_Editor
             FFUFont.Symbols[first] = temp2;
             FFUFont.Symbols[second] = temp1;
         }
-        private byte[,] NewPalitte(byte[,] image)
-        {
-            var height = image.GetLength(0);
-            var width = image.GetLength(1);
-            var temp = new byte[height, width];
-            for (var y = 0; y < height; y++)
-            {
-                for (var x = 0; x < width; x++)
-                {
-                    var value = image[y, x];
-                    if (value != 0)
-                    {
-                        temp[y, x] = (byte)(value * 7 / 15);//(byte)(value >> 1);
-                    }
-                }
-            }
-            return temp;
-        }
+
         private bool FindColor(IDictionary<Color, byte> colors, Color color, out int value)
         {
             foreach (var item in colors)
@@ -391,11 +411,7 @@ namespace FFU_Editor
                     }
                 }
             }
-            var temp = new Sym
-            {
-                Image = data
-            };
-            return temp;
+            return new Sym(data);
         }
         private int ToInt(char sym)
         {
@@ -425,7 +441,7 @@ namespace FFU_Editor
                 e.Effect = DragDropEffects.Copy;
             }
         }
-       
+
 
         private void ExportXML(string filename)
         {
@@ -438,25 +454,25 @@ namespace FFU_Editor
                 ShowError("WriteXML Error", ex);
             }
         }
-        
+
         private void ExportPNG(string filename)
         {
             try
             {
-                PNGUtility.Export(FFUFont, filename);  
+                PNGUtility.Export(FFUFont, filename, PalitteComboBox.SelectedIndex);
             }
             catch (Exception ex)
             {
                 ShowError("WritePNG Error", ex);
             }
         }
-        private void FontToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExportFontToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var ofd = new SaveFileDialog
             {
-                AddExtension = true,
+                DefaultExt = ".xml",
+                Filter = "Xml files (.xml)|*.xml",
                 Title = "Выберите имя файла",
-                ValidateNames = true,
                 InitialDirectory = Environment.CurrentDirectory
             };
             if (ofd.ShowDialog() != DialogResult.OK)
@@ -467,12 +483,12 @@ namespace FFU_Editor
             ExportXML(Path.ChangeExtension(filename, "xml"));
             ExportPNG(Path.ChangeExtension(filename, "png"));
         }
-        private void PNGToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExportPNGToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var ofd = new SaveFileDialog
             {
                 AddExtension = true,
-                DefaultExt = "png",
+                DefaultExt = ".png",
                 Title = "Выберите имя файла",
                 ValidateNames = true,
                 InitialDirectory = Environment.CurrentDirectory
@@ -644,18 +660,19 @@ namespace FFU_Editor
             try
             {
                 var form = new SetPaddingForm();
-                if(form.ShowDialog() != DialogResult.OK)
+                if (form.ShowDialog() != DialogResult.OK)
                 {
                     return;
                 }
-                SetBorder('A', 'Z', 2);
-                SetBorder('a', 'z', 1);
+                var padding = form.Value;
+                SetPadding('A', 'Z', padding);
+                SetPadding('a', 'z', padding);
 
-                SetBorder(0x8260, 0x8279, 2);
-                SetBorder(0x8281, 0x829a, 1);
+                SetPadding(0x8260, 0x8279, padding);
+                SetPadding(0x8281, 0x829a, padding);
 
-                SetBorder(0x8440, 0x8460, 1);
-                SetBorder(0x8470, 0x8491, 1);
+                SetPadding(0x8440, 0x8460, padding);
+                SetPadding(0x8470, 0x8491, padding);
                 ShowTemplateImage();
             }
             catch (Exception ex)
@@ -666,7 +683,7 @@ namespace FFU_Editor
         private SetSymbolsForm SymbolsForm { get; set; }
         private void SetSymbolsButton_Click(object sender, EventArgs e)
         {
-            if(SymbolsForm != null)
+            if (SymbolsForm != null)
             {
                 return;
             }
@@ -679,7 +696,7 @@ namespace FFU_Editor
 
         private void SymbolsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if(SymbolsForm.DialogResult == DialogResult.OK)
+            if (SymbolsForm.DialogResult == DialogResult.OK)
             {
                 MainConfig.Template = SymbolsForm.Symbols;
             }
@@ -689,10 +706,10 @@ namespace FFU_Editor
 
         private void SymbolsForm_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == nameof(SymbolsForm.Symbols) && SymbolsForm != null)
+            if (e.PropertyName == nameof(SymbolsForm.Symbols) && SymbolsForm != null)
             {
                 ShowTemplateImage(SymbolsForm.Symbols);
-            } 
+            }
         }
 
         private void FontOptionsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -700,6 +717,7 @@ namespace FFU_Editor
             var form = new FontInfoForm(FFUFont);
             form.ShowDialog();
         }
+        //Не знаю нужно ли
         private void ImportFromFFUToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -717,8 +735,7 @@ namespace FFU_Editor
                 {
                     if (FFUFont.Symbols.ContainsKey(pair.Key) || pair.Key >= 0x8440 && pair.Key <= 0x8491)
                     {
-                        var temp = new SymWrap(NewPalitte(pair.Value.Image));
-                        FFUFont.Symbols[pair.Key] = temp.Sym;
+                        FFUFont.Symbols[pair.Key] = pair.Value;
                     }
                 }
 
@@ -744,7 +761,33 @@ namespace FFU_Editor
 
         private void ImportXMLFontToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("В разработке");
+            try
+            {
+                if (!AskSave())
+                {
+                    return;
+                }
+                var ofd = new OpenFileDialog();
+                ofd.Filter = "XML файлы (*.xml)|*.xml";
+                if (ofd.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+                var info = XMLUtility.Import(ofd.FileName);
+
+                FFUFont = PNGUtility.Import(info);
+                ShowTemplateImage();
+            }
+            catch (Exception ex)
+            {
+                ShowError("", ex);
+            }
+        }
+
+        private void SymbolsListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new SymbolsListForm(FFUFont);
+            form.ShowDialog();
         }
     }
 }

@@ -28,10 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.SymCodeMaskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.txtWidth = new System.Windows.Forms.TextBox();
-            this.txtHeight = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -75,6 +74,8 @@
             this.SelectPalitteComboBox = new System.Windows.Forms.ComboBox();
             this.SelectBackgroundComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.txtHeight = new System.Windows.Forms.NumericUpDown();
+            this.txtWidth = new System.Windows.Forms.NumericUpDown();
             this.NextButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.PrevButton = new System.Windows.Forms.Button();
@@ -84,6 +85,9 @@
             this.CurrentColorPictureBox = new System.Windows.Forms.PictureBox();
             this.ScaleLabel = new System.Windows.Forms.Label();
             this.ScaleTextBox = new System.Windows.Forms.NumericUpDown();
+            this.SaveButton = new System.Windows.Forms.Button();
+            this.PrevTimer = new System.Windows.Forms.Timer(this.components);
+            this.NextTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.smallIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bigIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ExpandLeftTextBox)).BeginInit();
@@ -105,6 +109,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.PaddingLeftTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PaddingTopTextBox)).BeginInit();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHeight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtWidth)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentColorTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentColorPictureBox)).BeginInit();
@@ -129,26 +135,6 @@
             this.richTextBox1.Size = new System.Drawing.Size(386, 330);
             this.richTextBox1.TabIndex = 2;
             this.richTextBox1.Text = "";
-            // 
-            // txtWidth
-            // 
-            this.txtWidth.Location = new System.Drawing.Point(9, 96);
-            this.txtWidth.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtWidth.Name = "txtWidth";
-            this.txtWidth.ReadOnly = true;
-            this.txtWidth.Size = new System.Drawing.Size(125, 22);
-            this.txtWidth.TabIndex = 3;
-            this.txtWidth.Text = "14";
-            // 
-            // txtHeight
-            // 
-            this.txtHeight.Location = new System.Drawing.Point(9, 155);
-            this.txtHeight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtHeight.Name = "txtHeight";
-            this.txtHeight.ReadOnly = true;
-            this.txtHeight.Size = new System.Drawing.Size(125, 22);
-            this.txtHeight.TabIndex = 4;
-            this.txtHeight.Text = "14";
             // 
             // label1
             // 
@@ -643,12 +629,12 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.txtHeight);
+            this.groupBox4.Controls.Add(this.txtWidth);
             this.groupBox4.Controls.Add(this.label3);
             this.groupBox4.Controls.Add(this.SymCodeMaskedTextBox);
             this.groupBox4.Controls.Add(this.label1);
-            this.groupBox4.Controls.Add(this.txtWidth);
             this.groupBox4.Controls.Add(this.label2);
-            this.groupBox4.Controls.Add(this.txtHeight);
             this.groupBox4.Controls.Add(this.smallIcon);
             this.groupBox4.Location = new System.Drawing.Point(12, 75);
             this.groupBox4.Name = "groupBox4";
@@ -656,6 +642,22 @@
             this.groupBox4.TabIndex = 28;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Информация";
+            // 
+            // txtHeight
+            // 
+            this.txtHeight.Location = new System.Drawing.Point(9, 164);
+            this.txtHeight.Name = "txtHeight";
+            this.txtHeight.Size = new System.Drawing.Size(120, 22);
+            this.txtHeight.TabIndex = 10;
+            this.txtHeight.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TxtHeight_KeyDown);
+            // 
+            // txtWidth
+            // 
+            this.txtWidth.Location = new System.Drawing.Point(9, 104);
+            this.txtWidth.Name = "txtWidth";
+            this.txtWidth.Size = new System.Drawing.Size(120, 22);
+            this.txtWidth.TabIndex = 9;
+            this.txtWidth.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TxtWidth_KeyDown);
             // 
             // NextButton
             // 
@@ -665,7 +667,11 @@
             this.NextButton.TabIndex = 29;
             this.NextButton.Text = "Следующий";
             this.NextButton.UseVisualStyleBackColor = true;
-            this.NextButton.Click += new System.EventHandler(this.NextButton_Click);
+            this.NextButton.Visible = false;
+            this.NextButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.NextButton_MouseClick);
+            this.NextButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.NextButton_MouseDown);
+            this.NextButton.MouseLeave += new System.EventHandler(this.NextButton_MouseLeave);
+            this.NextButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.NextButton_MouseUp);
             // 
             // tableLayoutPanel5
             // 
@@ -692,11 +698,15 @@
             this.PrevButton.TabIndex = 31;
             this.PrevButton.Text = "Предыдущий";
             this.PrevButton.UseVisualStyleBackColor = true;
+            this.PrevButton.Visible = false;
             this.PrevButton.Click += new System.EventHandler(this.PrevButton_Click);
+            this.PrevButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PrevButton_MouseDown);
+            this.PrevButton.MouseLeave += new System.EventHandler(this.PrevButton_MouseLeave);
+            this.PrevButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PrevButton_MouseUp);
             // 
             // DrawText
             // 
-            this.DrawText.Location = new System.Drawing.Point(380, 438);
+            this.DrawText.Location = new System.Drawing.Point(165, 438);
             this.DrawText.Name = "DrawText";
             this.DrawText.Size = new System.Drawing.Size(171, 37);
             this.DrawText.TabIndex = 32;
@@ -772,12 +782,31 @@
             0});
             this.ScaleTextBox.ValueChanged += new System.EventHandler(this.ScaleTextBox_ValueChanged);
             // 
+            // SaveButton
+            // 
+            this.SaveButton.Location = new System.Drawing.Point(403, 438);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(148, 37);
+            this.SaveButton.TabIndex = 38;
+            this.SaveButton.Text = "Сохранить";
+            this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            // 
+            // PrevTimer
+            // 
+            this.PrevTimer.Tick += new System.EventHandler(this.PrevTimer_Tick);
+            // 
+            // NextTimer
+            // 
+            this.NextTimer.Tick += new System.EventHandler(this.NextTimer_Tick);
+            // 
             // AddSymForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1342, 600);
+            this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.ScaleTextBox);
             this.Controls.Add(this.ScaleLabel);
             this.Controls.Add(this.CurrentColorPictureBox);
@@ -823,6 +852,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.PaddingTopTextBox)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHeight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtWidth)).EndInit();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentColorTextBox)).EndInit();
@@ -837,8 +868,6 @@
 
         private System.Windows.Forms.MaskedTextBox SymCodeMaskedTextBox;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.TextBox txtWidth;
-        private System.Windows.Forms.TextBox txtHeight;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -891,5 +920,10 @@
         private System.Windows.Forms.PictureBox CurrentColorPictureBox;
         private System.Windows.Forms.Label ScaleLabel;
         private System.Windows.Forms.NumericUpDown ScaleTextBox;
+        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.NumericUpDown txtWidth;
+        private System.Windows.Forms.NumericUpDown txtHeight;
+        private System.Windows.Forms.Timer PrevTimer;
+        private System.Windows.Forms.Timer NextTimer;
     }
 }

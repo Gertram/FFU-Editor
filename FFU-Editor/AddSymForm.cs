@@ -8,34 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-
-using FFULibrary;
-using log4net;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
+using FFULibrary;
+using log4net;
+
 namespace FFU_Editor
 {
-    /*00000000000000000000
-00000000000000000000
-01111111111111111110
-01111111111111111110
-01111111111111111110
-01111111111111111110
-01111111111111111110
-01111111111111111110
-01111111111111111110
-01111111111111111110
-01111111111111111110
-01111111111111111110
-01111111111111111110
-01111111111111111110
-01111111111111111110
-01111111111111111110
-01111111111111111110
-01111111111111111110
-00000000000000000000
-00000000000000000000*/
     public partial class AddSymForm : Form
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(MainForm));
@@ -45,7 +25,10 @@ namespace FFU_Editor
         private Color CellColor1 { get; set; }
         private Color CellColor2 { get; set; }
         private Color CurrentColor { get; set; }
+        private Color BackgroundColor { get; set; } = Color.Transparent;
         private int CurrentColorIndex { get; set; }
+
+        private Bitmap CurrentImage { get; set; }
         public AddSymForm(FFU font)
         {
             InitializeComponent();
@@ -53,7 +36,8 @@ namespace FFU_Editor
             FFU = font;
 
             SelectPalitteComboBox.Items.Clear();
-            if (FFU.Pallettes != null) {
+            if (FFU.Pallettes != null)
+            {
                 foreach (var index in FFU.Pallettes.Select((x, index) => index))
                 {
                     SelectPalitteComboBox.Items.Add(index);
@@ -67,69 +51,71 @@ namespace FFU_Editor
             }
             SelectPalitteComboBox.SelectedIndex = 0;
             SelectBackgroundComboBox.SelectedIndex = 0;
-            CurrentColorTextBox.Maximum = FFU.GetPalette(0).Length - 1;
+            CurrentColorTextBox.Maximum = FFU.Header.FontInfo.Codek == CodekType.COLOR8 ? 7 : 15;
             CurrentColor = FFU.GetPalette(0)[0];
             CurrentColorIndex = 0;
         }
         private FFU FFU { get; set; }
-        private int currentCode = -1;
-        private Sym CurrentSym { get; set; }
-        public int CurrentCode
+        public Sym CurrentSym
         {
             get
             {
-                return currentCode;
+                return currentSym;
             }
             set
             {
-                ShowSym(value);
+                currentSym = value;
+                ShowSym();
             }
         }
-        private char ToChar(int sym)
+        private int currentCode = -1;
+        public int CurrentCode
         {
-            if (sym < 10)
+            get => currentCode;
+            set
             {
-                return (char)(sym + 0x30);
+                currentCode = value;
+                SymCodeMaskedTextBox.Text = value.ToString("X");
+                CurrentSym = FFU.Symbols[value];
+                NextButton.Visible = true;
+                PrevButton.Visible = true;
+                SaveButton.Visible = false;
             }
-            return (char)(sym + 0x37);
         }
         private void ShowSymAt(int index)
         {
             index = (FFU.Symbols.Count + index) % FFU.Symbols.Count;
             CurrentCode = FFU.Symbols.ElementAt(index).Key;
         }
-        private void ShowSym(int code = -1)
+        private void ShowSym()
         {
-            if (code == -1)
+            if (CurrentSym == null)
             {
-                if (currentCode == -1)
-                {
-                    return;
-                }
-                code = currentCode;
+                return;
             }
             try
             {
-                currentCode = code;
-                SymCodeMaskedTextBox.Text = code.ToString("X");
-                var palitte = FFU.GetPalette(SelectPalitteComboBox.SelectedIndex);
-                CurrentSym = FFU.Symbols[code];
+                var palitte = FFU.GetPalette(SelectPalitteComboBox.SelectedIndex,BackgroundColor);
                 var text = new char[(CurrentSym.Width + 1) * CurrentSym.Height];
                 var pos = 0;
-                for (var y = 0; y < CurrentSym.Height; y++)
+                for (var y = 0; y < CurrentSym.Height; y++,pos++)
                 {
                     for (var x = 0; x < CurrentSym.Width; x++, pos++)
                     {
-                        text[pos] = CurrentSym.Image[x, y].ToString("X")[0];
+                        try
+                        {
+                            var value = CurrentSym.Image[x, y];
+                            text[pos] = ToChar(FFU.Codek.Decode(value));
+                        }catch(Exception ex)
+                        {
+                            Console.WriteLine();
+                        }
                     }
                     text[pos] = '\n';
-                    pos++;
                 }
-                richTextBox1.Text = new string(text).Trim();
+                richTextBox1.Text = new string(text, 0, text.Length - 1);
                 var width = CurrentSym.Width;
                 var height = CurrentSym.Height;
-                txtWidth.Text = $"{width:X}";
-                txtHeight.Text = $"{height:X}";
                 SymWidth = width;
                 SymHeight = height;
                 bigIcon.Width = width * BigScale;
@@ -153,8 +139,11 @@ namespace FFU_Editor
                 }
 
                 buff = CurrentSym.GetBitmap(palitte, BigScale);
-                smallIcon.Image = CurrentSym.GetBitmap(palitte, MinScale);
-                bigIcon.Image = buff;
+                CurrentImage = new Bitmap(bigIcon.Width, bigIcon.Height);
+                bigIcon.Image = CurrentImage;
+                smallIcon.BackgroundImage = CurrentSym.GetBitmap(palitte, MinScale);
+                smallIcon.BackgroundImageLayout = ImageLayout.Zoom;
+                bigIcon.BackgroundImage = buff;
             }
             catch (Exception ex)
             {
@@ -164,17 +153,19 @@ namespace FFU_Editor
 
         private int SymWidth
         {
-            get => (byte)int.Parse(txtWidth.Text, System.Globalization.NumberStyles.HexNumber);
-            set => txtWidth.Text = value.ToString("X");
+            get => (int)txtWidth.Value;
+            set => txtWidth.Value = value;
         }
 
         private int SymHeight
         {
-            get => (byte)int.Parse(txtHeight.Text, System.Globalization.NumberStyles.HexNumber);
-            set => txtHeight.Text = value.ToString("X");
+            get => (int)txtHeight.Value;
+            set => txtHeight.Value = value;
         }
 
         private Bitmap buff;
+        private Sym currentSym;
+
         private int BigScale { get; set; } = 12;
         private int MinScale { get; set; } = 2;
         private Point GetMousePos(MouseEventArgs e)
@@ -198,43 +189,49 @@ namespace FFU_Editor
             {
                 var strokeLength = BigScale / 3;
 
-                var bitmap = buff.Clone() as Bitmap;
                 if (IsDraw)
                 {
                     var pos = GetMousePos(e);
-                    CurrentSym.Image[pos.X, pos.Y] = (byte)CurrentColorIndex;
+                    CurrentSym.Image[pos.X, pos.Y] = FFU.Codek.Encode((byte)CurrentColorIndex);
                     ShowSym();
                 }
                 else
                 {
-                    var rect = GetImageCellRect(e);
-                    for (int x = rect.Left; x < rect.Right; x += strokeLength * 2)
+                    using(var g = Graphics.FromImage(CurrentImage))
                     {
-                        for (int tx = x; tx < x + strokeLength && tx < rect.Right; tx++)
-                        {
-                            bitmap.SetPixel(tx, rect.Top, CellColor1);
-                            bitmap.SetPixel(tx, rect.Bottom - 1, CellColor1);
-                        }
-                        for (int tx = x + strokeLength; tx < x + 2 * strokeLength && tx < rect.Right; tx++)
-                        {
-                            bitmap.SetPixel(tx, rect.Top, CellColor2);
-                            bitmap.SetPixel(tx, rect.Bottom - 1, CellColor2);
+                        using(Pen pen1 = new Pen(CellColor1,1), pen2 = new Pen(CellColor2,1)) {
+                            g.Clear(Color.Transparent);
+
+                            var rect = GetImageCellRect(e);
+                            g.DrawLines(pen1, new PointF[] {
+                                new PointF(rect.Left,rect.Top + strokeLength),
+                                new PointF(rect.Left, rect.Top),
+                                new PointF(rect.Left + strokeLength,rect.Top)
+                            });
+                            g.DrawLine(pen2, rect.Left + strokeLength, rect.Top, rect.Right - strokeLength, rect.Top);
+                            g.DrawLines(pen1, new PointF[] {
+                                new PointF(rect.Left,rect.Bottom - strokeLength),
+                                new PointF(rect.Left, rect.Bottom),
+                                new PointF(rect.Left + strokeLength,rect.Bottom)
+                            });
+                            g.DrawLine(pen2, rect.Left + strokeLength, rect.Bottom, rect.Right - strokeLength, rect.Bottom);
+                            g.DrawLines(pen1, new PointF[] {
+                                new PointF(rect.Right,rect.Top + strokeLength),
+                                new PointF(rect.Right, rect.Top),
+                                new PointF(rect.Right - strokeLength,rect.Top)
+                            }); 
+                            g.DrawLine(pen2, rect.Left, rect.Top + strokeLength, rect.Left, rect.Bottom - strokeLength);
+
+                            g.DrawLines(pen1, new PointF[] {
+                                new PointF(rect.Right,rect.Bottom - strokeLength),
+                                new PointF(rect.Right, rect.Bottom),
+                                new PointF(rect.Right - strokeLength,rect.Bottom)
+                            });
+                            g.DrawLine(pen2, rect.Right, rect.Top + strokeLength, rect.Right, rect.Bottom - strokeLength);
+
                         }
                     }
-                    for (int y = rect.Top; y < rect.Bottom; y += strokeLength * 2)
-                    {
-                        for (int ty = y; ty < y + strokeLength && ty < rect.Bottom; ty++)
-                        {
-                            bitmap.SetPixel(rect.Left, ty, CellColor1);
-                            bitmap.SetPixel(rect.Right - 1, ty, CellColor1);
-                        }
-                        for (int ty = y + strokeLength; ty < y + 2 * strokeLength && ty < rect.Bottom; ty++)
-                        {
-                            bitmap.SetPixel(rect.Left, ty, CellColor2);
-                            bitmap.SetPixel(rect.Right - 1, ty, CellColor2);
-                        }
-                    }
-                    bigIcon.Image = bitmap;
+                    bigIcon.Image = CurrentImage;
                 }
             }
             catch (Exception ex)
@@ -249,10 +246,11 @@ namespace FFU_Editor
             {
                 IsDraw = true;
                 PictureBox_MouseMove(sender, e);
-            }else if (e.Button == MouseButtons.Right)
+            }
+            else if (e.Button == MouseButtons.Right)
             {
                 var pos = GetMousePos(e);
-                CurrentColorTextBox.Value = CurrentSym.Image[pos.X, pos.Y];
+                CurrentColorTextBox.Value = FFU.Codek.Decode(CurrentSym.Image[pos.X, pos.Y]);
             }
         }
 
@@ -298,17 +296,6 @@ namespace FFU_Editor
             }
         }
         private int SymPosition => FFU.Symbols.Keys.ToList().IndexOf(CurrentCode);
-        private void NextButton_Click(object sender, EventArgs e)
-        {
-            SymCodeMaskedTextBox.Focus();
-            ShowSymAt(SymPosition + 1);
-        }
-
-        private void PrevButton_Click(object sender, EventArgs e)
-        {
-            SymCodeMaskedTextBox.Focus();
-            ShowSymAt(SymPosition - 1);
-        }
         private void SelectPalitteComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -337,20 +324,19 @@ namespace FFU_Editor
             {
                 if (SelectBackgroundComboBox.Text == "Черный")
                 {
-                    bigIcon.BackColor = Color.Black;
-                    smallIcon.BackColor = Color.Black;
+                    BackgroundColor = Color.Black;
                     CellColor1 = Color.White;
                     CellColor2 = Color.Black;
                     IconCursor = WhitePen;
                 }
                 else if (SelectBackgroundComboBox.Text == "Белый")
                 {
-                    bigIcon.BackColor = Color.White;
-                    smallIcon.BackColor = Color.White;
+                    BackgroundColor = Color.White;
                     CellColor1 = Color.Black;
                     CellColor2 = Color.White;
                     IconCursor = BlackPen;
                 }
+                ShowSym();
             }
             catch (Exception ex)
             {
@@ -361,11 +347,12 @@ namespace FFU_Editor
         {
             try
             {
-                if (e.KeyCode == Keys.Enter)
+                if (e.KeyCode == Keys.Enter && currentCode != -1)
                 {
                     CurrentCode = int.Parse(SymCodeMaskedTextBox.Text, System.Globalization.NumberStyles.HexNumber);
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 ShowError("", ex);
             }
@@ -380,11 +367,11 @@ namespace FFU_Editor
         {
             if (e.KeyCode == Keys.Right && e.Control)
             {
-                NextButton_Click(this, null);
+                ShowNextSym();
             }
             else if (e.KeyCode == Keys.Left && e.Control)
             {
-                PrevButton_Click(this, null);
+                ShowPrevSym();
             }
         }
 
@@ -407,37 +394,52 @@ namespace FFU_Editor
             BlackPen.Dispose();
         }
 
+        byte ToByte(char sym)
+        {
+            if(sym <= '9')
+            {
+                return (byte)(sym - '0');
+            }
+            return (byte)(sym - 'A');
+        }
+        char ToChar(byte sym)
+        {
+            if(sym <= 9)
+            {
+                return (char)(sym + '0');
+            }
+            return (char)(sym + 'A');
+        }
+
         private void DrawText_Click(object sender, EventArgs e)
         {
             try
             {
                 var lines = richTextBox1.Text.Split('\n');
+                var bytes = lines.Select(x => x.Select(y => FFU.Codek.Encode(ToByte(y))).ToArray()).ToArray();
                 var height = lines.Length;
                 var width = lines.Max(x => x.Length);
                 var temp = new byte[width, height];
-                char[] text = new char[width * height + height];
-                int pos = 0;
-                for (var y = 0; y < height; y++)
+                var chars = new char[(width + 1) * height];
+                var pos = 0;
+                for (var y = 0; y < height; y++, pos++)
                 {
                     var line = lines[y];
-                    for (int x = 0; x < width; x++, pos++)
+                    var byteRow = bytes[y];
+                    for (var x = 0; x < line.Length; x++, pos++)
                     {
-                        var value = 0;
-                        if (x < line.Length && int.TryParse(line[x].ToString(), System.Globalization.NumberStyles.HexNumber, null, out int result))
-                        {
-                            value = result;
-                        }
-                        text[pos] = value.ToString("X")[0];
-
-                        temp[x, y] = (byte)value;
+                        chars[pos] = line[x];
+                        temp[x, y] = byteRow[x];
                     }
-                    if (y != height - 1)
+                    for(var x = line.Length; x < width; x++)
                     {
-                        text[pos] = '\n';
-                        pos++;
+                        chars[pos] = '\0';
+                        temp[x, y] = 0;
                     }
+                    chars[pos] = '\n';
                 }
-                CurrentSym.Image = temp;
+                richTextBox1.Text = new string(chars, 0, chars.Length - 1);
+;               CurrentSym.Image = temp;
 
                 ShowSym();
             }
@@ -458,6 +460,130 @@ namespace FFU_Editor
         {
             BigScale = (int)ScaleTextBox.Value;
             ShowSym();
+        }
+        private void SetSymSize()
+        {
+            var regionSize = new Size(SymWidth, SymHeight);
+            var symSize = new Size(CurrentSym.Width,CurrentSym.Height);
+            if(regionSize.Width < symSize.Width)
+            {
+                symSize.Width = regionSize.Width;
+            }
+            if(regionSize.Height < symSize.Height)
+            {
+                symSize.Height = regionSize.Height;
+            }
+            new SymWrap(CurrentSym).CopyImage(regionSize,new Point(),new Rectangle(new Point(),symSize));
+            ShowSym();
+        }
+
+        private void TxtWidth_KeyDown(object sender, KeyEventArgs e)
+        {
+            SetSymSize();
+        }
+
+        private void TxtHeight_KeyDown(object sender, KeyEventArgs e)
+        {
+            SetSymSize();
+        }
+
+        private bool ShowRewriteAttention()
+        {
+            var result = MessageBox.Show("Символ с таким кодом уже существует.\n Продолжить с заменой символа?", "Внимание", MessageBoxButtons.YesNo);
+            if(result == DialogResult.OK)
+            {
+                return true;
+            }
+            if(result == DialogResult.No)
+            {
+                return false;
+            }
+            throw new NotImplementedException();
+        }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var code = int.Parse(SymCodeMaskedTextBox.Text);
+
+                if (FFU.Symbols.ContainsKey(code) && !ShowRewriteAttention())
+                {
+                    return;
+                }
+                FFU.Symbols[code] = CurrentSym;
+                CurrentCode = code;
+            }
+            catch (Exception ex)
+            {
+                ShowError("Save", ex);
+            }
+        }
+
+        private void ShowPrevSym()
+        {
+            SymCodeMaskedTextBox.Focus();
+            ShowSymAt(SymPosition - 1);
+        }
+
+        private void ShowNextSym()
+        {
+            SymCodeMaskedTextBox.Focus();
+            ShowSymAt(SymPosition + 1);
+        }
+
+        private void NextButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            NextTimer.Interval = 500;
+            NextTimer.Start();
+        }
+
+        private void NextButton_MouseUp(object sender, MouseEventArgs e)
+        {
+            NextTimer.Stop();
+        }
+
+        private void NextButton_MouseLeave(object sender, EventArgs e)
+        {
+            NextTimer.Stop();
+        }
+
+        private void PrevButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            PrevTimer.Interval = 500;
+            PrevTimer.Start();
+        }
+
+        private void PrevButton_MouseLeave(object sender, EventArgs e)
+        {
+            PrevTimer.Stop();
+        }
+
+        private void PrevButton_MouseUp(object sender, MouseEventArgs e)
+        {
+            PrevTimer.Stop();
+        }
+
+        private void PrevTimer_Tick(object sender, EventArgs e)
+        {
+            PrevTimer.Interval = 16;
+            ShowPrevSym();
+        }
+
+        private void NextTimer_Tick(object sender, EventArgs e)
+        {
+            NextTimer.Interval = 16;
+            ShowNextSym();
+        }
+
+        private void NextButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            ShowNextSym();
+        }
+
+        private void PrevButton_Click(object sender, EventArgs e)
+        {
+            ShowPrevSym();
         }
     }
 }

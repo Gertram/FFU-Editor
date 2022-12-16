@@ -34,7 +34,7 @@
             this.SaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ImportFromFFUToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ImportXMLFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExportPNGToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.ExportXMLFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,6 +44,7 @@
             this.SetPaddingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportPaddingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FontOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SymbolsListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.smallIcon = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnEnterSymCode = new System.Windows.Forms.Button();
@@ -67,7 +68,6 @@
             this.BackgroundComboBox = new System.Windows.Forms.ComboBox();
             this.TemplateSymbolsBox = new System.Windows.Forms.GroupBox();
             this.SetSymbolsButton = new System.Windows.Forms.Button();
-            this.ImportXMLFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.smallIcon)).BeginInit();
             this.smallIconWrap.SuspendLayout();
@@ -85,7 +85,8 @@
             this.FileToolStripMenuItem,
             this.EditingToolStripMenuItem,
             this.ToolsToolStripMenuItem,
-            this.FontOptionsToolStripMenuItem});
+            this.FontOptionsToolStripMenuItem,
+            this.SymbolsListToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1047, 28);
@@ -113,6 +114,7 @@
             // 
             // SaveToolStripMenuItem
             // 
+            this.SaveToolStripMenuItem.Enabled = false;
             this.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem";
             this.SaveToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.SaveToolStripMenuItem.Text = "Сохранить";
@@ -120,6 +122,7 @@
             // 
             // SaveAsToolStripMenuItem
             // 
+            this.SaveAsToolStripMenuItem.Enabled = false;
             this.SaveAsToolStripMenuItem.Name = "SaveAsToolStripMenuItem";
             this.SaveAsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.SaveAsToolStripMenuItem.Text = "Сохранить как";
@@ -128,24 +131,24 @@
             // ImportToolStripMenuItem
             // 
             this.ImportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ImportFromFFUToolStripMenuItem,
             this.ImportXMLFontToolStripMenuItem});
             this.ImportToolStripMenuItem.Name = "ImportToolStripMenuItem";
             this.ImportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.ImportToolStripMenuItem.Text = "Импортировать из";
             // 
-            // ImportFromFFUToolStripMenuItem
+            // ImportXMLFontToolStripMenuItem
             // 
-            this.ImportFromFFUToolStripMenuItem.Name = "ImportFromFFUToolStripMenuItem";
-            this.ImportFromFFUToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.ImportFromFFUToolStripMenuItem.Text = "FFU";
-            this.ImportFromFFUToolStripMenuItem.Click += new System.EventHandler(this.ImportFromFFUToolStripMenuItem_Click);
+            this.ImportXMLFontToolStripMenuItem.Name = "ImportXMLFontToolStripMenuItem";
+            this.ImportXMLFontToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.ImportXMLFontToolStripMenuItem.Text = "XML Шрифта";
+            this.ImportXMLFontToolStripMenuItem.Click += new System.EventHandler(this.ImportXMLFontToolStripMenuItem_Click);
             // 
             // ExportToolStripMenuItem
             // 
             this.ExportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ExportPNGToolStripMenuItem1,
             this.ExportXMLFontToolStripMenuItem});
+            this.ExportToolStripMenuItem.Enabled = false;
             this.ExportToolStripMenuItem.Name = "ExportToolStripMenuItem";
             this.ExportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.ExportToolStripMenuItem.Text = "Экспортировать в";
@@ -155,14 +158,14 @@
             this.ExportPNGToolStripMenuItem1.Name = "ExportPNGToolStripMenuItem1";
             this.ExportPNGToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
             this.ExportPNGToolStripMenuItem1.Text = "PNG";
-            this.ExportPNGToolStripMenuItem1.Click += new System.EventHandler(this.PNGToolStripMenuItem_Click);
+            this.ExportPNGToolStripMenuItem1.Click += new System.EventHandler(this.ExportPNGToolStripMenuItem_Click);
             // 
             // ExportXMLFontToolStripMenuItem
             // 
             this.ExportXMLFontToolStripMenuItem.Name = "ExportXMLFontToolStripMenuItem";
             this.ExportXMLFontToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.ExportXMLFontToolStripMenuItem.Text = "XML Шрифт";
-            this.ExportXMLFontToolStripMenuItem.Click += new System.EventHandler(this.PNGToolStripMenuItem_Click);
+            this.ExportXMLFontToolStripMenuItem.Click += new System.EventHandler(this.ExportFontToolStripMenuItem_Click);
             // 
             // EditingToolStripMenuItem
             // 
@@ -208,6 +211,13 @@
             this.FontOptionsToolStripMenuItem.Text = "Параметры шрифта";
             this.FontOptionsToolStripMenuItem.Click += new System.EventHandler(this.FontOptionsToolStripMenuItem_Click);
             // 
+            // SymbolsListToolStripMenuItem
+            // 
+            this.SymbolsListToolStripMenuItem.Name = "SymbolsListToolStripMenuItem";
+            this.SymbolsListToolStripMenuItem.Size = new System.Drawing.Size(146, 24);
+            this.SymbolsListToolStripMenuItem.Text = "Список символов";
+            this.SymbolsListToolStripMenuItem.Click += new System.EventHandler(this.SymbolsListToolStripMenuItem_Click);
+            // 
             // smallIcon
             // 
             this.smallIcon.BackColor = System.Drawing.Color.Black;
@@ -230,7 +240,7 @@
             // 
             // btnEnterSymCode
             // 
-            this.btnEnterSymCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.btnEnterSymCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEnterSymCode.Location = new System.Drawing.Point(25, 90);
             this.btnEnterSymCode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -346,8 +356,8 @@
             // 
             // SymImageAddressLabel
             // 
-            this.SymImageAddressLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.SymImageAddressLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SymImageAddressLabel.AutoSize = true;
             this.SymImageAddressLabel.Location = new System.Drawing.Point(3, 40);
@@ -359,8 +369,8 @@
             // 
             // SymHeaderAddressLabel
             // 
-            this.SymHeaderAddressLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.SymHeaderAddressLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SymHeaderAddressLabel.AutoSize = true;
             this.SymHeaderAddressLabel.Location = new System.Drawing.Point(3, 0);
@@ -471,13 +481,6 @@
             this.SetSymbolsButton.UseVisualStyleBackColor = true;
             this.SetSymbolsButton.Click += new System.EventHandler(this.SetSymbolsButton_Click);
             // 
-            // ImportXMLFontToolStripMenuItem
-            // 
-            this.ImportXMLFontToolStripMenuItem.Name = "ImportXMLFontToolStripMenuItem";
-            this.ImportXMLFontToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.ImportXMLFontToolStripMenuItem.Text = "XML Шрифта";
-            this.ImportXMLFontToolStripMenuItem.Click += new System.EventHandler(this.ImportXMLFontToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -550,7 +553,6 @@
         private System.Windows.Forms.ToolStripMenuItem ExportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ExportPNGToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem ExportXMLFontToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ImportFromFFUToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem EditingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ToolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem GenerateFontToolStripMenuItem;
@@ -558,5 +560,6 @@
         private System.Windows.Forms.ToolStripMenuItem ImportPaddingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FontOptionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ImportXMLFontToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SymbolsListToolStripMenuItem;
     }
 }
