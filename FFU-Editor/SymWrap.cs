@@ -54,7 +54,7 @@ namespace FFU_Editor
 
             CopyImage(region, new Point(left, top), new Rectangle(location, size));
         }
-        private SymWrap CopyImage(Size region, Point position, Rectangle source)
+        internal SymWrap CopyImage(Size region, Point position, Rectangle source)
         {
             var dest = new Rectangle(position, source.Size);
             var temp = new byte[region.Width, region.Height];

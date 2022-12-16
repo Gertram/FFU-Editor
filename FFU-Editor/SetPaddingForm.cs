@@ -23,9 +23,9 @@ namespace FFU_Editor
             {
                 return;
             }
-            Value = numericUpDown1.Value;
+            Value = (int)numericUpDown1.Value;
             DialogResult = DialogResult.OK;
         }
-        public decimal Value { get;private set; }  = 0;
+        public int Value { get;private set; }  = 0;
     }
 }

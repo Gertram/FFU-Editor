@@ -51,6 +51,26 @@ namespace FFU_Editor
             try
             {
                 FontInfo.ScaleMinus = (byte)MinusScaleTextBox.Value;
+                if(CodekComboBox.SelectedIndex == 0)
+                {
+                    if(FontInfo.Codek != CodekType.COLOR8)
+                    {
+
+                    }
+                    FontInfo.Codek = CodekType.COLOR8;
+                }
+                else if(CodekComboBox.SelectedIndex == 1)
+                {
+                    if (FontInfo.Codek != CodekType.COLOR16)
+                    {
+
+                    }
+                    FontInfo.Codek = CodekType.COLOR16;
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
                 DialogResult = DialogResult.OK;
             }
             catch (Exception ex)
