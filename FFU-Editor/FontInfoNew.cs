@@ -11,20 +11,20 @@ using FFULibrary;
 
 namespace FFU_Editor
 {
-    public partial class FontInfoForm : Form
+    public partial class FontInfoNew : Form
     {
         private FFU FFU { get; set; }
         private FontInfo FontInfo { get; set; }
-        public FontInfoForm(FFU font)
+        public FontInfoNew(FFU font)
         {
             InitializeComponent();
             FFU = font;
             FontInfo = font.Header.FontInfo;
-            if(FontInfo.Codek == CodekType.COLOR8)
+            if (FontInfo.Codek == CodekType.COLOR8)
             {
                 CodekComboBox.SelectedIndex = 0;
             }
-            else if(FontInfo.Codek == CodekType.COLOR16)
+            else if (FontInfo.Codek == CodekType.COLOR16)
             {
                 CodekComboBox.SelectedIndex = 1;
             }
@@ -43,7 +43,7 @@ namespace FFU_Editor
                 EndingTextBox.Text = "BigEndian";
             }
             PlusScaleTextBox.Text = FontInfo.ScalePlus.ToString("X");
-            MinusScaleTextBox.Value = FontInfo.LineHeight;
+            LineHeightTextBox.Value = FontInfo.LineHeight;
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
@@ -52,15 +52,16 @@ namespace FFU_Editor
             {
                 FontInfo.SymHeight = (byte)SymHeightTextBox.Value;
                 FontInfo.SymWidth = (byte)SymWidthTextBox.Value;
-                if(CodekComboBox.SelectedIndex == 0)
+                FontInfo.LineHeight = (byte)LineHeightTextBox.Value;
+                if (CodekComboBox.SelectedIndex == 0)
                 {
-                    if(FontInfo.Codek != CodekType.COLOR8)
+                    if (FontInfo.Codek != CodekType.COLOR8)
                     {
 
                     }
                     FontInfo.Codek = CodekType.COLOR8;
                 }
-                else if(CodekComboBox.SelectedIndex == 1)
+                else if (CodekComboBox.SelectedIndex == 1)
                 {
                     if (FontInfo.Codek != CodekType.COLOR16)
                     {

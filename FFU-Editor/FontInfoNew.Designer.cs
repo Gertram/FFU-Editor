@@ -1,7 +1,7 @@
 ﻿
 namespace FFU_Editor
 {
-    partial class FontInfoForm
+    partial class FontInfoNew
     {
         /// <summary>
         /// Required designer variable.
@@ -38,17 +38,15 @@ namespace FFU_Editor
             this.HeightLabel = new System.Windows.Forms.Label();
             this.WidthLabel = new System.Windows.Forms.Label();
             this.CodekLabel = new System.Windows.Forms.Label();
-            this.MinusScaleTextBox = new System.Windows.Forms.NumericUpDown();
+            this.LineHeightTextBox = new System.Windows.Forms.NumericUpDown();
             this.CodekComboBox = new System.Windows.Forms.ComboBox();
             this.SymHeightTextBox = new System.Windows.Forms.NumericUpDown();
             this.SymWidthTextBox = new System.Windows.Forms.NumericUpDown();
             this.SaveButton = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MinusScaleTextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LineHeightTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SymHeightTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SymWidthTextBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -64,7 +62,7 @@ namespace FFU_Editor
             this.tableLayoutPanel1.Controls.Add(this.HeightLabel, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.WidthLabel, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.CodekLabel, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.MinusScaleTextBox, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.LineHeightTextBox, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.CodekComboBox, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.SymHeightTextBox, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.SymWidthTextBox, 1, 1);
@@ -92,7 +90,7 @@ namespace FFU_Editor
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(118, 35);
             this.label7.TabIndex = 12;
-            this.label7.Text = "Уменьшение?";
+            this.label7.Text = "Высота линии";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label6
@@ -178,14 +176,13 @@ namespace FFU_Editor
             this.CodekLabel.Text = "Кодирование";
             this.CodekLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // MinusScaleTextBox
+            // LineHeightTextBox
             // 
-            this.MinusScaleTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.MinusScaleTextBox.Location = new System.Drawing.Point(144, 176);
-            this.MinusScaleTextBox.Name = "MinusScaleTextBox";
-            this.MinusScaleTextBox.ReadOnly = true;
-            this.MinusScaleTextBox.Size = new System.Drawing.Size(84, 22);
-            this.MinusScaleTextBox.TabIndex = 6;
+            this.LineHeightTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.LineHeightTextBox.Location = new System.Drawing.Point(144, 176);
+            this.LineHeightTextBox.Name = "LineHeightTextBox";
+            this.LineHeightTextBox.Size = new System.Drawing.Size(84, 22);
+            this.LineHeightTextBox.TabIndex = 6;
             // 
             // CodekComboBox
             // 
@@ -225,23 +222,21 @@ namespace FFU_Editor
             this.SaveButton.UseVisualStyleBackColor = true;
             this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
-            // FontInfoForm
+            // FontInfoNew
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(316, 319);
-            this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "FontInfoForm";
+            this.Name = "FontInfoNew";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Параметры шрифта";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MinusScaleTextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LineHeightTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SymHeightTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SymWidthTextBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -258,10 +253,9 @@ namespace FFU_Editor
         private System.Windows.Forms.Label WidthLabel;
         private System.Windows.Forms.Label CodekLabel;
         private System.Windows.Forms.Button SaveButton;
-        private System.Windows.Forms.NumericUpDown MinusScaleTextBox;
+        private System.Windows.Forms.NumericUpDown LineHeightTextBox;
         private System.Windows.Forms.ComboBox CodekComboBox;
         private System.Windows.Forms.NumericUpDown SymHeightTextBox;
         private System.Windows.Forms.NumericUpDown SymWidthTextBox;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }

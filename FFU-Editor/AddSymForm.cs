@@ -452,7 +452,9 @@ namespace FFU_Editor
         private void CurrentColorTextBox_ValueChanged(object sender, EventArgs e)
         {
             CurrentColorIndex = (int)CurrentColorTextBox.Value;
-            CurrentColor = FFU.GetPalette(SelectPalitteComboBox.SelectedIndex)[CurrentColorIndex];
+            var encoded = FFU.Codek.Encode((byte)CurrentColorIndex);
+            var palitte = FFU.GetPalette(SelectPalitteComboBox.SelectedIndex);
+            CurrentColor = palitte[encoded];
             CurrentColorPictureBox.BackColor = CurrentColor;
         }
 

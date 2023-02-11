@@ -66,11 +66,14 @@ namespace FFU_Editor
                 FileName = filename;
                 Config.Set("LastFile", FileName);
                 PalitteComboBox.Items.Clear();
-                foreach (var index in FFUFont.Pallettes.Select((x, index) => index))
+                if (FFUFont.Pallettes != null)
                 {
-                    PalitteComboBox.Items.Add(index);
+                    foreach (var index in FFUFont.Pallettes.Select((x, index) => index))
+                    {
+                        PalitteComboBox.Items.Add(index);
+                    }
+                    PalitteComboBox.SelectedIndex = 0;
                 }
-                PalitteComboBox.SelectedIndex = 0;
                 BackgroundComboBox.SelectedIndex = 0;
                 ShowTemplateImage();
                 ShowSym(FFUFont.Symbols.ElementAt(0).Key);
@@ -154,7 +157,25 @@ namespace FFU_Editor
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            //a1-df
+            //63
             OpenLastFile();
+            int offset = 0xa1;
+            foreach (var sym in FFUFont.Symbols.Where(x => x.Key >= 0x8440 && x.Key <= 0x845a))
+            {
+                FFUFont.Symbols[offset].Image = sym.Value.Image;
+                offset++;
+            }
+            foreach (var sym in FFUFont.Symbols.Where(x => x.Key >= 0x845e && x.Key <= 0x8460))
+            {
+                FFUFont.Symbols[offset].Image = sym.Value.Image;
+                offset++;
+            }
+            foreach (var sym in FFUFont.Symbols.Where(x => x.Key >= 0x8470 && x.Key <= 0x8491))
+            {
+                FFUFont.Symbols[offset].Image = sym.Value.Image;
+                offset++;
+            }
         }
         private void ShowSym(int code)
         {
@@ -225,7 +246,8 @@ namespace FFU_Editor
         {
             try
             {
-                if (FFUFont.CalcFileSize() > FFUFont.Header.FileSize
+                int filesize = FFUFont.CalcFileSize();
+                if (filesize > FFUFont.Header.FileSize
                     && MessageBox.Show("Итоговой размер файла превышает исходный!Хотите продолжить?", "Внимание", MessageBoxButtons.YesNo) != DialogResult.Yes)
                 {
                     return false;
@@ -714,7 +736,7 @@ namespace FFU_Editor
 
         private void FontOptionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = new FontInfoForm(FFUFont);
+            var form = new FontInfoNew(FFUFont);
             form.ShowDialog();
         }
         //Не знаю нужно ли
@@ -788,6 +810,121 @@ namespace FFU_Editor
         {
             var form = new SymbolsListForm(FFUFont);
             form.ShowDialog();
+        }
+        private static byte[,] AddStroke(byte[,] data,int width,int height,byte color)
+        {
+            var newImage = new byte[width, height];
+            for (var y = 0; y < height; y++)
+            {
+                for (var x = 0; x < width; x++)
+                {
+                    var pixel = data[x, y];
+                    if (pixel != 0)
+                    {
+                        newImage[x, y] = pixel;
+                        continue;
+                    }
+
+                    if (x + 1 < width - 1 && data[x + 1, y] != 0
+                        || x - 1 > 0 && data[x - 1, y] != 0
+                        || y + 1 < height - 1 && data[x, y + 1] != 0
+                        || y - 1 > 0 && data[x, y - 1] != 0)
+                    {
+                        newImage[x, y] = color;
+                    }
+                    else
+                    {
+                        newImage[x, y] = pixel;
+                    }
+                }
+            }
+            return newImage;
+        }
+        private void AddStrokeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int i = 0;
+            var palette = FFUFont.GetPalette(0);
+            byte black = 0;
+            progressBar1.Value = 0;
+            progressBar1.Maximum = FFUFont.Symbols.Count;
+            for(byte j = 0; j < palette.Length; j++)
+            {
+                var color = palette[j];
+                if(color.A == 0xff && color.R == 0 && color.G == 0 && color.B == 0)
+                {
+                    black = j;
+                    break;
+                }
+            }
+            if(black == 0)
+            {
+                return;
+            }
+            var colors = new byte[] { 5, 2 };
+            AddStroke(0x8141, 0x8258, colors);
+            return;
+            AddStroke(0, 255, colors);
+
+            AddStroke(0x8260, 0x8279, colors);
+            AddStroke(0x8281, 0x829a, colors);
+            AddStroke(0x829f, 0x8396, colors);
+
+            AddStroke(0x8440, 0x8460, colors);
+            AddStroke(0x8470, 0x8491, colors);
+        }
+        private void AddStroke(int start,int end,byte[] colors)
+        {
+            foreach (var item in FFUFont.Symbols.Where(x=>x.Key >= start && x.Key <= end))
+            {
+                var sym = item.Value;
+                var image = sym.Image;
+                foreach(var color in colors)
+                {
+                    image = AddStroke(image, sym.Width, sym.Height, color);
+                }
+                sym.Image = image;
+            }
+        }
+        private void ExpandPaddingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            const char ch = '・';
+            const int end = 0x875d;
+            const int start = 0xf040;
+            var encoding = Encoding.GetEncoding("shift-jis");
+            var font = new FFU("D:\\Diabolik lovers\\Work\\DL\\font\\0work");
+            var index = start;
+            int count = 0;
+            using (var writer = new StreamWriter("log.txt"))
+            {
+                foreach (var sym in font.Symbols.Where(x => x.Key <= end))
+                {
+                    while (encoding.GetChars(new byte[] { (byte)((index & 0xff00) >> 8), (byte)(index & 0xff) })[0] == ch)
+                    {
+                        index++;
+                    }
+                    char value = '\0';
+                    if(sym.Key < 0x80 || sym.Key > 0xa0 && sym.Key < 0xe0)
+                    {
+                        value = encoding.GetChars(new byte[] { (byte)(sym.Key & 0xff) })[0];
+                    }
+                    else
+                    {
+                        value = encoding.GetChars(new byte[] { (byte)((sym.Key & 0xff00) >> 8),(byte)(sym.Key & 0xff) })[0];
+                    }
+                    FFUFont.Symbols[index] = new Sym(sym.Value.Image);
+                    writer.WriteLine($"'{value}'={index:X}");
+                    index++;
+                    count++;
+                }
+            }
+        }
+        private void ExpandPadding(int start, int end, int padding)
+        {
+            foreach (var sym in FFUFont.Symbols.Where(x => x.Key >= start && x.Key <= end))
+            {
+                var temp = new SymWrap(sym.Value);
+                temp.AddPadding(padding,0);
+            }
         }
     }
 }
