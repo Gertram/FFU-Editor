@@ -41,8 +41,10 @@
             this.EditingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GenerateFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExpandPaddingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SetPaddingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportPaddingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AddStrokeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FontOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SymbolsListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.smallIcon = new System.Windows.Forms.PictureBox();
@@ -68,6 +70,7 @@
             this.BackgroundComboBox = new System.Windows.Forms.ComboBox();
             this.TemplateSymbolsBox = new System.Windows.Forms.GroupBox();
             this.SetSymbolsButton = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.smallIcon)).BeginInit();
             this.smallIconWrap.SuspendLayout();
@@ -139,7 +142,7 @@
             // ImportXMLFontToolStripMenuItem
             // 
             this.ImportXMLFontToolStripMenuItem.Name = "ImportXMLFontToolStripMenuItem";
-            this.ImportXMLFontToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.ImportXMLFontToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.ImportXMLFontToolStripMenuItem.Text = "XML Шрифта";
             this.ImportXMLFontToolStripMenuItem.Click += new System.EventHandler(this.ImportXMLFontToolStripMenuItem_Click);
             // 
@@ -156,14 +159,14 @@
             // ExportPNGToolStripMenuItem1
             // 
             this.ExportPNGToolStripMenuItem1.Name = "ExportPNGToolStripMenuItem1";
-            this.ExportPNGToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
+            this.ExportPNGToolStripMenuItem1.Size = new System.Drawing.Size(173, 26);
             this.ExportPNGToolStripMenuItem1.Text = "PNG";
             this.ExportPNGToolStripMenuItem1.Click += new System.EventHandler(this.ExportPNGToolStripMenuItem_Click);
             // 
             // ExportXMLFontToolStripMenuItem
             // 
             this.ExportXMLFontToolStripMenuItem.Name = "ExportXMLFontToolStripMenuItem";
-            this.ExportXMLFontToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.ExportXMLFontToolStripMenuItem.Size = new System.Drawing.Size(173, 26);
             this.ExportXMLFontToolStripMenuItem.Text = "XML Шрифт";
             this.ExportXMLFontToolStripMenuItem.Click += new System.EventHandler(this.ExportFontToolStripMenuItem_Click);
             // 
@@ -177,8 +180,10 @@
             // 
             this.ToolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.GenerateFontToolStripMenuItem,
+            this.ExpandPaddingToolStripMenuItem,
             this.SetPaddingToolStripMenuItem,
-            this.ImportPaddingToolStripMenuItem});
+            this.ImportPaddingToolStripMenuItem,
+            this.AddStrokeToolStripMenuItem});
             this.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem";
             this.ToolsToolStripMenuItem.Size = new System.Drawing.Size(117, 24);
             this.ToolsToolStripMenuItem.Text = "Инструменты";
@@ -189,6 +194,13 @@
             this.GenerateFontToolStripMenuItem.Size = new System.Drawing.Size(263, 26);
             this.GenerateFontToolStripMenuItem.Text = "Сгенерировать шрифт";
             this.GenerateFontToolStripMenuItem.Click += new System.EventHandler(this.GenerateFontToolStripMenuItem_Click);
+            // 
+            // ExpandPaddingToolStripMenuItem
+            // 
+            this.ExpandPaddingToolStripMenuItem.Name = "ExpandPaddingToolStripMenuItem";
+            this.ExpandPaddingToolStripMenuItem.Size = new System.Drawing.Size(263, 26);
+            this.ExpandPaddingToolStripMenuItem.Text = "Увеличить отступы";
+            this.ExpandPaddingToolStripMenuItem.Click += new System.EventHandler(this.ExpandPaddingToolStripMenuItem_Click);
             // 
             // SetPaddingToolStripMenuItem
             // 
@@ -203,6 +215,14 @@
             this.ImportPaddingToolStripMenuItem.Size = new System.Drawing.Size(263, 26);
             this.ImportPaddingToolStripMenuItem.Text = "Импортировать отступы";
             this.ImportPaddingToolStripMenuItem.Click += new System.EventHandler(this.ImportPaddingToolStripMenuItem_Click);
+            // 
+            // AddStrokeToolStripMenuItem
+            // 
+            this.AddStrokeToolStripMenuItem.Name = "AddStrokeToolStripMenuItem";
+            this.AddStrokeToolStripMenuItem.Size = new System.Drawing.Size(263, 26);
+            this.AddStrokeToolStripMenuItem.Text = "Добавить обводку";
+            this.AddStrokeToolStripMenuItem.Visible = false;
+            this.AddStrokeToolStripMenuItem.Click += new System.EventHandler(this.AddStrokeToolStripMenuItem_Click);
             // 
             // FontOptionsToolStripMenuItem
             // 
@@ -240,7 +260,7 @@
             // 
             // btnEnterSymCode
             // 
-            this.btnEnterSymCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnEnterSymCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEnterSymCode.Location = new System.Drawing.Point(25, 90);
             this.btnEnterSymCode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -356,8 +376,8 @@
             // 
             // SymImageAddressLabel
             // 
-            this.SymImageAddressLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.SymImageAddressLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SymImageAddressLabel.AutoSize = true;
             this.SymImageAddressLabel.Location = new System.Drawing.Point(3, 40);
@@ -369,8 +389,8 @@
             // 
             // SymHeaderAddressLabel
             // 
-            this.SymHeaderAddressLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.SymHeaderAddressLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SymHeaderAddressLabel.AutoSize = true;
             this.SymHeaderAddressLabel.Location = new System.Drawing.Point(3, 0);
@@ -481,12 +501,20 @@
             this.SetSymbolsButton.UseVisualStyleBackColor = true;
             this.SetSymbolsButton.Click += new System.EventHandler(this.SetSymbolsButton_Click);
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(946, 526);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(100, 23);
+            this.progressBar1.TabIndex = 19;
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1047, 550);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.TemplateSymbolsBox);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.statusStrip1);
@@ -561,5 +589,8 @@
         private System.Windows.Forms.ToolStripMenuItem FontOptionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ImportXMLFontToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SymbolsListToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AddStrokeToolStripMenuItem;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ToolStripMenuItem ExpandPaddingToolStripMenuItem;
     }
 }
