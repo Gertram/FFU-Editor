@@ -1,0 +1,35 @@
+﻿<mah:MetroWindow 
+    x:Class="FFUEditor.ModifiableCharactersWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:local="clr-namespace:FFUEditor"
+    mc:Ignorable="d"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}"
+    Title="{DynamicResource m_ModifiableCharactersWindow_Title}" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Label Margin="10,5" HorizontalAlignment="Left" Content="{DynamicResource m_ModifiebleCharacters_Label}"/>
+            <Button 
+                Content="{DynamicResource m_ModifiableCharactersWindow_Default_Button}"
+                Click="DefaultButton_Click"
+                x:Name="DefaultButton" Margin="10,5" Padding="10,5" HorizontalAlignment="Right" />
+        </Grid>
+        <TextBox 
+            Grid.Row="1" x:Name="CharactersTextBox" AcceptsReturn="True" 
+            TextChanged="CharactersTextBox_TextChanged"
+            TextWrapping="WrapWithOverflow" Margin="5" Padding="5"/>
+        <Button 
+            Grid.Row="2" x:Name="SaveButton" 
+            Click="SaveButton_Click" 
+            Content="{DynamicResource m_Save_Header}" 
+            Margin="10,5" Padding="10,5" HorizontalAlignment="Right"/>
+    </Grid>
+</mah:MetroWindow>

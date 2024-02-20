@@ -45,6 +45,7 @@
             this.SetPaddingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportPaddingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AddStrokeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyRangeToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FontOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SymbolsListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.smallIcon = new System.Windows.Forms.PictureBox();
@@ -183,7 +184,8 @@
             this.ExpandPaddingToolStripMenuItem,
             this.SetPaddingToolStripMenuItem,
             this.ImportPaddingToolStripMenuItem,
-            this.AddStrokeToolStripMenuItem});
+            this.AddStrokeToolStripMenuItem,
+            this.copyRangeToToolStripMenuItem});
             this.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem";
             this.ToolsToolStripMenuItem.Size = new System.Drawing.Size(117, 24);
             this.ToolsToolStripMenuItem.Text = "Инструменты";
@@ -221,8 +223,14 @@
             this.AddStrokeToolStripMenuItem.Name = "AddStrokeToolStripMenuItem";
             this.AddStrokeToolStripMenuItem.Size = new System.Drawing.Size(263, 26);
             this.AddStrokeToolStripMenuItem.Text = "Добавить обводку";
-            this.AddStrokeToolStripMenuItem.Visible = false;
             this.AddStrokeToolStripMenuItem.Click += new System.EventHandler(this.AddStrokeToolStripMenuItem_Click);
+            // 
+            // copyRangeToToolStripMenuItem
+            // 
+            this.copyRangeToToolStripMenuItem.Name = "copyRangeToToolStripMenuItem";
+            this.copyRangeToToolStripMenuItem.Size = new System.Drawing.Size(263, 26);
+            this.copyRangeToToolStripMenuItem.Text = "CopyRangeTo";
+            this.copyRangeToToolStripMenuItem.Click += new System.EventHandler(this.copyRangeToToolStripMenuItem_Click);
             // 
             // FontOptionsToolStripMenuItem
             // 
@@ -592,5 +600,6 @@
         private System.Windows.Forms.ToolStripMenuItem AddStrokeToolStripMenuItem;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.ToolStripMenuItem ExpandPaddingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyRangeToToolStripMenuItem;
     }
 }
