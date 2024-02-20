@@ -1,0 +1,93 @@
+﻿<mah:MetroWindow 
+    x:Class="FFUEditor.FontInfoWindow"
+    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:FFUEditor"
+    WindowStartupLocation="CenterScreen"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}"
+    mc:Ignorable="d"
+    SizeToContent="Height"
+    Title="{DynamicResource m_FontInfoWindow_Title}" Width="200">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label 
+            Grid.Row="0" Grid.Column="0" 
+            Content="{DynamicResource m_FontInfo_Codek_Label}" Margin="5"/>
+        <ComboBox 
+            Grid.Row="0" Grid.Column="1" x:Name="CodekComboBox"
+            Margin="5" VerticalAlignment="Center">
+            <ComboBoxItem Content="{DynamicResource m_FontInfo_Codek_3bpp_ComboBoxItem}"/>
+            <ComboBoxItem Content="{DynamicResource m_FontInfo_Codek_4bpp_ComboBoxItem}"/>
+        </ComboBox>
+        <Label 
+            Grid.Row="1" Grid.Column="0" 
+            Content="{DynamicResource m_FontInfo_SymWidth_Label}" Margin="5"/>
+        <TextBox 
+            Grid.Row="1" Grid.Column="1" 
+            Text="{Binding FontInfo.SymWidth,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="5" VerticalAlignment="Center" />
+        <Label 
+            Grid.Row="2" Grid.Column="0" 
+            Content="{DynamicResource m_FontInfo_SymHeight_Label}" Margin="5"/>
+        <TextBox 
+            Grid.Row="2" Grid.Column="1" 
+            Text="{Binding FontInfo.SymHeight,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="5" VerticalAlignment="Center" />
+        <Label 
+            Grid.Row="3" Grid.Column="0" 
+            Content="{DynamicResource m_FontInfo_LittleEndian_Label}" Margin="5"/>
+        <TextBox 
+            Grid.Row="3" Grid.Column="1" 
+            Text="{Binding FontInfo.Endian,Mode=OneWay}" IsReadOnly="True" Margin="5" VerticalAlignment="Center" />
+        <Label 
+            Grid.Row="4" Grid.Column="0" 
+            Content="{DynamicResource m_FontInfo_Encoding_Label}" Margin="5"/>
+        <ComboBox 
+            Grid.Row="4" Grid.Column="1" x:Name="EncodingComboBox"
+            Margin="5" VerticalAlignment="Center">
+            <ComboBoxItem Content="SHIFT_JIS"/>
+            <ComboBoxItem Content="UTF8"/>
+        </ComboBox>
+        <Label 
+            Grid.Row="5" Grid.Column="0" 
+            Content="{DynamicResource m_FontInfo_ScalePlus_Label}" Margin="5"/>
+        <TextBox 
+            Grid.Row="5" Grid.Column="1" 
+            Text="{Binding FontInfo.ScalePlus,Mode=OneWay}" IsReadOnly="True" Margin="5" VerticalAlignment="Center" />
+        <Label 
+            Grid.Row="6" Grid.Column="0" 
+            Content="{DynamicResource m_FontInfo_LineHeight_Label}" Margin="5"/>
+        <TextBox 
+            Grid.Row="6" Grid.Column="1" 
+            Text="{Binding FontInfo.LineHeight,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="5" VerticalAlignment="Center" />
+        <Label 
+            Grid.Row="7" Grid.Column="0" 
+            Content="{DynamicResource m_FontInfo_Eight_Label}" Margin="5"/>
+        <TextBox 
+            Grid.Row="7" Grid.Column="1" 
+            Text="{Binding FontInfo.Eigth,Mode=OneWay}" IsReadOnly="True" Margin="5" VerticalAlignment="Center" />
+        <Button 
+            Grid.Row="8" Grid.Column="0" x:Name="OkButton"
+            Click="OkButton_Click"
+            Content="{DynamicResource m_Ok_Header}"/>
+        <Button 
+            Grid.Row="8" Grid.Column="1" x:Name="CancelButton"
+            Click="CancelButton_Click"
+            Content="{DynamicResource m_Cancel_Header}"/>
+    </Grid>
+</mah:MetroWindow>

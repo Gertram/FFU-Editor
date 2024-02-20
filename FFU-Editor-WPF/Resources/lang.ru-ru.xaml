@@ -1,0 +1,91 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:v="clr-namespace:System;assembly=mscorlib">
+    <v:String x:Key="m_File_MenuItem">Файл</v:String>
+    <v:String x:Key="m_Settings_MenuItem">Настройки</v:String>
+    <v:String x:Key="m_Language_MenuItem">Язык</v:String>
+    <v:String x:Key="m_File_Open_MenuItem">Открыть</v:String>
+    <v:String x:Key="m_File_Save_MenuItem">Сохранить</v:String>
+    <v:String x:Key="m_File_SaveAs_MenuItem">Сохранить как</v:String>
+    <v:String x:Key="m_File_Export_MenuItem">Экспортировать</v:String>
+    <v:String x:Key="m_File_Import_MenuItem">Импортировать</v:String>
+    <v:String x:Key="m_Ok_Header">Ок</v:String>
+    <v:String x:Key="m_Cancel_Header">Отменить</v:String>
+    <v:String x:Key="m_Add_Header">Добавить</v:String>
+    <v:String x:Key="m_Show_Header">Показать</v:String>
+    <v:String x:Key="m_Redact_Header">Изменить</v:String>
+    <v:String x:Key="m_Remove_Header">Удалить</v:String>
+    <v:String x:Key="m_Open_Header">Открыть</v:String>
+    <v:String x:Key="m_Save_Header">Сохранить</v:String>
+    <v:String x:Key="m_Edit_Header">Изменить</v:String>
+
+    <v:String x:Key="m_Prev_Header">Prev</v:String>
+    <v:String x:Key="m_Next_Header">Next</v:String>
+    <v:String x:Key="m_Set_Header">Set</v:String>
+    <v:String x:Key="m_Expand_Header">Expand</v:String>
+    <v:String x:Key="m_Cut_Header">Cut</v:String>
+    <v:String x:Key="m_AddCharacterWindow_Title">AddCharacterWindow</v:String>
+    <v:String x:Key="m_Left_Header">Left</v:String>
+    <v:String x:Key="m_Right_Header">Right</v:String>
+    <v:String x:Key="m_Top_Header">Top</v:String>
+    <v:String x:Key="m_Down_Header">Down</v:String>
+
+    <v:String x:Key="m_File_Header">File</v:String>
+    <v:String x:Key="m_File_Export_PNG_MenuItem">PNG</v:String>
+    <v:String x:Key="m_File_Export_XML_MenuItem">XML Font</v:String>
+    <v:String x:Key="m_File_Import_XML_MenuItem">XML Font</v:String>
+    <v:String x:Key="m_Tools_MenuItem">Tools</v:String>
+    <v:String x:Key="m_FontSettings_MenuItem">Font Settings</v:String>
+    <v:String x:Key="m_CharactersList_MenuItem">Characters List</v:String>
+    <v:String x:Key="m_Miniature_Header">Miniature</v:String>
+    <v:String x:Key="m_CurrentColor_Header">Current Color</v:String>
+    <v:String x:Key="m_Scale_Header">Scale</v:String>
+    <v:String x:Key="m_UpdateImage_Header">Update Image</v:String>
+
+    <v:String x:Key="m_CurrentSym_Header">Current Symbol</v:String>
+    <v:String x:Key="m_CurrentSym_Character_Label">Sym</v:String>
+    <v:String x:Key="m_CurrentSym_CharacterIndex_Label">Index</v:String>
+    <v:String x:Key="m_CurrentSym_HexCode_Label">HexCode</v:String>
+    <v:String x:Key="m_CurrentSym_Header_Label">Header</v:String>
+    <v:String x:Key="m_CurrentSym_Body_Label">Body</v:String>
+
+    <v:String x:Key="m_TemplateImage_Header">Template Image</v:String>
+    <v:String x:Key="m_Palette_Label">Palette</v:String>
+    <v:String x:Key="m_Background_Label">Background</v:String>
+    <v:String x:Key="m_Black_Color">Black</v:String>
+    <v:String x:Key="m_White_Color">White</v:String>
+
+    <v:String x:Key="m_FontInfoWindow_Title">FontInfoWindow</v:String>
+    <v:String x:Key="m_FontInfo_Codek_Label">Codek</v:String>
+    <v:String x:Key="m_FontInfo_Codek_3bpp_ComboBoxItem">3bpp</v:String>
+    <v:String x:Key="m_FontInfo_Codek_4bpp_ComboBoxItem">4bpp</v:String>
+    <v:String x:Key="m_FontInfo_SymWidth_Label">Sym Width</v:String>
+    <v:String x:Key="m_FontInfo_SymHeight_Label">Sym Height</v:String>
+    <v:String x:Key="m_FontInfo_LittleEndian_Label">Little Endian</v:String>
+    <v:String x:Key="m_FontInfo_Encoding_Label">Encoding</v:String>
+    <v:String x:Key="m_FontInfo_ScalePlus_Label">Six</v:String>
+    <v:String x:Key="m_FontInfo_LineHeight_Label">Line Height</v:String>
+    <v:String x:Key="m_FontInfo_Eight_Label">Eight</v:String>
+
+    <v:String x:Key="m_SetPaddingWindow_Label">Padding wide</v:String>
+    <v:String x:Key="m_SetPaddingWindowW_Title">SetPaddingWindow</v:String>
+
+    <v:String x:Key="m_ModifiableCharactersWindow_Title">Default</v:String>
+    <v:String x:Key="m_ModifiebleCharacters_Label">Modifiable Сharacters</v:String>
+    <v:String x:Key="m_ModifiableCharactersWindow_Default_Button">Default</v:String>
+
+    <v:String x:Key="m_Tools_ImportPadding_MenuItem">Import Padding</v:String>
+    <v:String x:Key="m_Tools_ExpandPadding_MenuItem">Expand Padding</v:String>
+    <v:String x:Key="m_Tools_CutPadding_MenuItem">Cut Padding</v:String>
+    <v:String x:Key="m_Tools_SetPadding_MenuItem">Set Padding</v:String>
+    <v:String x:Key="m_Tools_AddStroke_MenuItem">Add Stroke</v:String>
+    <v:String x:Key="m_Tools_GenerateFont_MenuItem">Generate Font</v:String>
+    <v:String x:Key="m_Tools_CopyRange_MenuItem">Copy Range</v:String>
+    <v:String x:Key="m_Tools_MoveRange_MenuItem">Move Range</v:String>
+
+    <v:String x:Key="m_CharactersListWindow_Title">CharactersListWindow</v:String>
+    <v:String x:Key="m_CharactersListWindow_Character_Header">Character</v:String>
+    <v:String x:Key="m_CharactersListWindow_Code_Header">Code</v:String>
+    <v:String x:Key="m_CharactersListWindow_Image_Header">Image</v:String>
+</ResourceDictionary>

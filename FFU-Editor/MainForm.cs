@@ -119,6 +119,7 @@ namespace FFU_Editor
                                 if (x_off + x >= bitmap.Width)
                                 {
                                     Console.WriteLine();
+                                    break;
                                 }
                                 bitmap.SetPixel(x_off + x, y_off + y, buff.GetPixel(x, y));
                             }
@@ -157,25 +158,7 @@ namespace FFU_Editor
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //a1-df
-            //63
             OpenLastFile();
-            int offset = 0xa1;
-            foreach (var sym in FFUFont.Symbols.Where(x => x.Key >= 0x8440 && x.Key <= 0x845a))
-            {
-                FFUFont.Symbols[offset].Image = sym.Value.Image;
-                offset++;
-            }
-            foreach (var sym in FFUFont.Symbols.Where(x => x.Key >= 0x845e && x.Key <= 0x8460))
-            {
-                FFUFont.Symbols[offset].Image = sym.Value.Image;
-                offset++;
-            }
-            foreach (var sym in FFUFont.Symbols.Where(x => x.Key >= 0x8470 && x.Key <= 0x8491))
-            {
-                FFUFont.Symbols[offset].Image = sym.Value.Image;
-                offset++;
-            }
         }
         private void ShowSym(int code)
         {
@@ -375,12 +358,19 @@ namespace FFU_Editor
         }
         private void ImportPadding(int start, int end, FFU tempFont)
         {
-            var ratio = FFUFont.Header.FontInfo.SymWidth / tempFont.Header.FontInfo.SymWidth;
+            //float ratio = (float)FFUFont.Header.FontInfo.SymWidth / tempFont.Header.FontInfo.SymWidth;
             foreach (var sym in FFUFont.Symbols.Where(x => x.Key >= start && x.Key <= end))
             {
                 var temp = new SymWrap(tempFont.Symbols[sym.Key]);
-                var leftBorder = temp.FindLeftPosition() * ratio;
-                var rightBorder = (temp.Sym.Width - temp.FindRightPosition() - 1) * ratio;
+                var leftBorder = temp.FindLeftPosition();
+                var rightPosition = temp.FindRightPosition();
+                if(rightPosition == -1 || leftBorder == -1)
+                {
+                    Console.WriteLine();
+                    continue;
+                }
+                var rightBorder = temp.Sym.Width - rightPosition - 1;
+                temp = new SymWrap(sym.Value);
                 temp.SetHorizontalPadding(leftBorder, rightBorder);
             }
         }
@@ -639,10 +629,14 @@ namespace FFU_Editor
 
                 ImportPadding(0x8440, 0x8460, tempFont);
                 ImportPadding(0x8470, 0x8491, tempFont);
+
+                ImportPadding(0x8141, 0x8258, tempFont);
+                ImportPadding(0x21, 255, tempFont);
+
                 ImportPadding(0x8260, 0x8279, tempFont);
                 ImportPadding(0x8281, 0x829a, tempFont);
-                ImportPadding('A', 'Z', tempFont);
-                ImportPadding('a', 'z', tempFont);
+                ImportPadding(0x829f, 0x8396, tempFont);
+
                 ShowTemplateImage();
             }
             catch (Exception ex)
@@ -844,25 +838,24 @@ namespace FFU_Editor
         {
             int i = 0;
             var palette = FFUFont.GetPalette(0);
-            byte black = 0;
+            byte black = 0xff;
             progressBar1.Value = 0;
             progressBar1.Maximum = FFUFont.Symbols.Count;
-            for(byte j = 0; j < palette.Length; j++)
-            {
-                var color = palette[j];
-                if(color.A == 0xff && color.R == 0 && color.G == 0 && color.B == 0)
-                {
-                    black = j;
-                    break;
-                }
-            }
-            if(black == 0)
-            {
-                return;
-            }
+            //for(byte j = 0; j < palette.Length; j++)
+            //{
+            //    var color = palette[j];
+            //    if(color.A == 0xff && color.R == 0 && color.G == 0 && color.B == 0)
+            //    {
+            //        black = j;
+            //        break;
+            //    }
+            //}
+            //if(black == -1)
+            //{
+            //    return;
+            //}
             var colors = new byte[] { 5, 2 };
             AddStroke(0x8141, 0x8258, colors);
-            return;
             AddStroke(0, 255, colors);
 
             AddStroke(0x8260, 0x8279, colors);
@@ -887,43 +880,97 @@ namespace FFU_Editor
         }
         private void ExpandPaddingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            const char ch = '・';
-            const int end = 0x875d;
-            const int start = 0xf040;
-            var encoding = Encoding.GetEncoding("shift-jis");
-            var font = new FFU("D:\\Diabolik lovers\\Work\\DL\\font\\0work");
-            var index = start;
-            int count = 0;
-            using (var writer = new StreamWriter("log.txt"))
+            try
             {
-                foreach (var sym in font.Symbols.Where(x => x.Key <= end))
+                var form = new SetPaddingForm();
+                if (form.ShowDialog() != DialogResult.OK)
                 {
-                    while (encoding.GetChars(new byte[] { (byte)((index & 0xff00) >> 8), (byte)(index & 0xff) })[0] == ch)
-                    {
-                        index++;
-                    }
-                    char value = '\0';
-                    if(sym.Key < 0x80 || sym.Key > 0xa0 && sym.Key < 0xe0)
-                    {
-                        value = encoding.GetChars(new byte[] { (byte)(sym.Key & 0xff) })[0];
-                    }
-                    else
-                    {
-                        value = encoding.GetChars(new byte[] { (byte)((sym.Key & 0xff00) >> 8),(byte)(sym.Key & 0xff) })[0];
-                    }
-                    FFUFont.Symbols[index] = new Sym(sym.Value.Image);
-                    writer.WriteLine($"'{value}'={index:X}");
-                    index++;
-                    count++;
+                    return;
                 }
+                var padding = form.Value;
+
+                ExpandPadding(0, 'Z', padding);
+                ExpandPadding('a', 'z', padding);
+
+                ExpandPadding(0x8260, 0x8279, padding);
+                ExpandPadding(0x8281, 0x829a, padding);
+
+                ExpandPadding(0x8440, 0x8460, padding);
+                ExpandPadding(0x8470, 0x8491, padding);
+                //ExpandPadding(0, FFUFont.Symbols.Keys.Last()+1, padding);
+                //ExpandPadding(0, 255, padding);
+
+                //ExpandPadding(0x8260, 0x8279, padding);
+                //ExpandPadding(0x8281, 0x829a, padding);
+                //ExpandPadding(0x829f, 0x8396, padding);
+
+                //ExpandPadding(0x8440, 0x8460, padding);
+                //ExpandPadding(0x8470, 0x8491, padding);
+                ShowTemplateImage();
             }
+            catch (Exception ex)
+            {
+                ShowError("RemovePadding", ex);
+            }
+            //const char ch = '・';
+            //const int end = 0x875d;
+            //const int start = 0xf040;
+            //var encoding = Encoding.GetEncoding("shift-jis");
+            //var font = new FFU("D:\\Diabolik lovers\\Work\\DL\\font\\0");
+            //var index = start;
+            //int count = 0;
+            //using (var writer = new StreamWriter("log.txt"))
+            //{
+            //    foreach (var sym in font.Symbols.Where(x => x.Key <= end))
+            //    {
+            //        while (encoding.GetChars(new byte[] { (byte)((index & 0xff00) >> 8), (byte)(index & 0xff) })[0] == ch)
+            //        {
+            //            index++;
+            //        }
+            //        char value = '\0';
+            //        if (sym.Key < 0x80 || sym.Key > 0xa0 && sym.Key < 0xe0)
+            //        {
+            //            value = encoding.GetChars(new byte[] { (byte)(sym.Key & 0xff) })[0];
+            //        }
+            //        else
+            //        {
+            //            value = encoding.GetChars(new byte[] { (byte)((sym.Key & 0xff00) >> 8), (byte)(sym.Key & 0xff) })[0];
+            //        }
+            //        FFUFont.Symbols[index] = new Sym(sym.Value.Image);
+            //        writer.WriteLine($"'{value}'={index:X}");
+            //        index++;
+            //        count++;
+            //    }
+            //}
         }
         private void ExpandPadding(int start, int end, int padding)
         {
             foreach (var sym in FFUFont.Symbols.Where(x => x.Key >= start && x.Key <= end))
             {
                 var temp = new SymWrap(sym.Value);
-                temp.AddPadding(padding,0);
+                temp.AddPadding(0,padding);
+            }
+        }
+
+        private void copyRangeToToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //a1-df
+            //63
+            int offset = 0xa1;
+            foreach (var sym in FFUFont.Symbols.Where(x => x.Key >= 0x8440 && x.Key <= 0x845a))
+            {
+                FFUFont.Symbols[offset].Image = sym.Value.Image;
+                offset++;
+            }
+            foreach (var sym in FFUFont.Symbols.Where(x => x.Key >= 0x845e && x.Key <= 0x8460))
+            {
+                FFUFont.Symbols[offset].Image = sym.Value.Image;
+                offset++;
+            }
+            foreach (var sym in FFUFont.Symbols.Where(x => x.Key >= 0x8470 && x.Key <= 0x8491))
+            {
+                FFUFont.Symbols[offset].Image = sym.Value.Image;
+                offset++;
             }
         }
     }
