@@ -44,21 +44,21 @@ namespace FFUEditor
                         Console.WriteLine();
                         continue;
                     }
-                    var topBorder = temp.FindTopPosition();
-                    var bottomPosition = temp.FindBottomPosition();
-                    var bottomBorder = temp.Sym.Height - bottomPosition - 1;
-                    temp = new SymWrap(pair.Value);
-                    temp.SetVerticalPadding(topBorder, bottomBorder);
-                    //var rightBorder = temp.Sym.Width - rightPosition - 1;
+                    //var topBorder = temp.FindTopPosition();
+                    //var bottomPosition = temp.FindBottomPosition();
+                    //var bottomBorder = temp.Sym.Height - bottomPosition - 1;
                     //temp = new SymWrap(pair.Value);
-                    //leftBorder = (int)(leftBorder * k);
-                    //rightBorder = (int)(rightBorder * k);
-                    
-                    //temp.SetHorizontalPadding(leftBorder, rightBorder);
-                    //if(temp.Sym.Width % 2 != 0)
-                    //{
-                    //    temp.AddPadding(0, 0, 1, 0);
-                    //}
+                    //temp.SetVerticalPadding(topBorder, bottomBorder);
+                    var rightBorder = temp.Sym.Width - rightPosition - 1;
+                    temp = new SymWrap(pair.Value);
+                    leftBorder = (int)(leftBorder * k);
+                    rightBorder = (int)(rightBorder * k);
+
+                    temp.SetHorizontalPadding(leftBorder, rightBorder);
+                    if (temp.Sym.Width % 2 != 0)
+                    {
+                        temp.AddPadding(0, 0, 1, 0);
+                    }
                 }
             }
         }
@@ -218,6 +218,32 @@ namespace FFUEditor
 
         internal void SetPadding()
         {
+            float k = 0.6f;
+            var s = "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ";
+            //foreach (var pair in FFUFont.Symbols.Where(x=> s.Contains(x.Key)))
+            foreach (var pair in FFUFont.Symbols)
+            {
+                var wrap = new SymWrap(pair.Value);
+                var left = wrap.FindLeftPosition();
+                if(left < 0)
+                {
+                    continue;
+                }
+                var right = wrap.RightPadding();
+                var internal_width = wrap.Sym.Width - right - left;
+                left = (int)Math.Round(left * k);
+                right = (int)Math.Round(right * k);
+                if((internal_width + left+right) % 2 == 1)
+                {
+                    right++;
+                }
+                wrap.SetHorizontalPadding(left, right);
+                
+            }
+
+            return;
+
+
             var s2 = "｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞ";
             SetPadding('｡', 'ﾞ',1);
             return;
@@ -419,7 +445,8 @@ namespace FFUEditor
         }
         internal void CopyRange()
         {
-            var s = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!?,.‘’“”'\"";
+            //var s = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!?,.‘’“”'\"";
+            var s = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
             //var s2 = "｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞ";
             //var input = "You’re the weird one, Reiji-san";
             //var output = "";

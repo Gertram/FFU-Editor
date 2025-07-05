@@ -45,7 +45,11 @@ namespace FFUEditor
         }
         private int CurrentCharacterIndex
         {
-            get => FFUFont.Symbols.Keys.ToList().IndexOf(CurrentCharacter);
+            get
+            {
+                return FFUFont.Symbols.Keys.ToList().IndexOf(CurrentCharacter);
+            }
+
             set
             {
                 value = (value + FFUFont.Symbols.Count) % FFUFont.Symbols.Count;
@@ -230,7 +234,9 @@ namespace FFUEditor
             mtxtCharacterCode.Text = $"{string.Join("",FFUFont.CurrentEncoding.GetBytes(CurrentCharacter.ToString()).Select(x=>x.ToString("X")))}";
             mtxtCharacter.Text = CurrentCharacter.ToString();
             mtxtCharacterIndex.Text = CurrentCharacterIndex.ToString();
-            var sym = FFUFont.Symbols[CurrentCharacter];
+            if(!FFUFont.Symbols.TryGetValue(CurrentCharacter,out var sym)){
+                return;
+            }
             CharacterHeaderTextBox.Text = $"{sym.HeaderAddress:X}";
             CharacterBodyTextBox.Text = $"{sym.Address:X}";
             var palette = GetPalette();
